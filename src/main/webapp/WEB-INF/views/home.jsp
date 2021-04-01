@@ -1,14 +1,15 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="false" %>
+<%@ page session="false" pageEncoding="UTF-8" %>
 <html>
 <head>
-	<title>Home</title>
+	<title>스톡피디아</title>
 </head>
 <body>
 <h1>
 	Hello world!  
 </h1>
 
-<P>  The time on the server is ${serverTime}. </P>
+<P>여기는 home.jsp</P>
+<jsp:include page="login.jsp"/>
 </body>
 </html>
