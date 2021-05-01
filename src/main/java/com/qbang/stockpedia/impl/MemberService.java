@@ -23,18 +23,28 @@ public class MemberService {
 	}
 	
 	//로그인
-	public boolean checkUser(String uid, String upw) {
+	public String checkUser(String uid, String upw) {
 		Member member = memberDAOJPA.selectMember(uid);
 		
 		if(member != null) {
 			String id = member.getUid();
 			String pw = member.getUpw();
+			String nick = member.getUnick();
 			
 			if(id.equals(uid) && passwordEcoder.matches(upw, pw)) {
-				return true;
+				return nick;
 			}
 		}
-		
-		return false;
+		return "";
+	}
+	
+	//글 등록에 필요한 user num 가져오기
+	public int getUserNum(String uid) {
+		Member member = memberDAOJPA.selectMember(uid);
+		System.out.println(member.getUid());
+		if(member != null) {
+			return member.getNum();
+		}
+		return -1;
 	}
 }

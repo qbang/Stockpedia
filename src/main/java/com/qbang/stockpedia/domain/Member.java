@@ -16,12 +16,13 @@ public class Member implements Serializable {
 	private String uid;
 	private String unick;
 	private String upw;
+	
 	public int getNum() {
 		return num;
 	}
-//	public void setNum(int num) {
-//		this.num = num;
-//	}
+	public void setNum(int num) {
+		this.num = num;
+	}
 	public String getUid() {
 		return uid;
 	}

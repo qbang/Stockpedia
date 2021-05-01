@@ -30,10 +30,7 @@ public class MemberDAOJPA {
 		}catch(Exception e) {
 			e.printStackTrace();
 			tx.rollback();
-		}finally {
-			em.close();
 		}
-		emf.close();
 	}
 	
 	public Member selectMember(String uid) {
