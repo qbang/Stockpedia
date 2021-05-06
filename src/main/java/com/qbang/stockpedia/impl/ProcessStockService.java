@@ -19,9 +19,7 @@ public class ProcessStockService {
 	@Resource(name="StockDAOJPA")
 	private StockDAOJPA stockDAOJPA;
 	
-	private Date today = new Date(new java.util.Date().getTime());
 	private HashMap<String, Integer> infoMap = new HashMap<String, Integer>();
-	private Date sqlDate = new Date(new java.util.Date().getTime());
 	
 	// 가격대별로 분류해서 arraylist에 넣어주기
 	public ArrayList<HashMap<String, Integer>>[] classifyItemInfo(List<Stock> list) {
@@ -78,15 +76,19 @@ public class ProcessStockService {
 	}
 	
 	public void registerStock(HashMap<String, Integer> map) {
+		Date sqlDate = new Date(new java.util.Date().getTime());
 		stockDAOJPA.insertStock(map, sqlDate);
 	}
 	
 	public List<Stock> searchTodayStock() {
+		Date today = new Date(new java.util.Date().getTime());
 		List<Stock> list = stockDAOJPA.selectStock(today);
 		return list;
 	}
 	
 	public List<Stock> searchIdxStock(int idx){
+		Date sqlDate = new Date(new java.util.Date().getTime());
+		
 		int start = 0;
 		int end = 0;
 		
