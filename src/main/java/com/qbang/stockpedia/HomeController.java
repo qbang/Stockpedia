@@ -230,13 +230,13 @@ public class HomeController {
 	}
 	
 	//3초마다:*/3 * * * * * 매일 오전 6시마다: 0 0 6 * * *
-	@Scheduled(cron="0 0 6 * * *")
+	@Scheduled(cron="0 0 0/1 * * *")
 	@Async
 	public void checkForBatch(){
-		JSONArray ret = requestStockService.getItemInfo();
-		if(ret.length() == 0) {
-			checkForBatch();
-		}else {
+		List<Stock> stock = processStockService.searchTodayStock();
+		//등록된 오늘 날짜의 주식이 없으면 주식 정보 요청
+		if(stock == null) {
+			JSONArray ret = requestStockService.getItemInfo();
 			// 종목명이랑 가격만 빼주고 DB에 넣어주기
 			HashMap<String, Integer> map = processStockService.parseItemInfo(ret);
 			processStockService.registerStock(map);
