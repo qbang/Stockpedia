@@ -25,17 +25,8 @@
 	  			<div>
 	  				<h3>주식 정보</h3>
 	  			</div>
-	  			<!-- <div>
-	  				<a href="stock">더보기</a>
-	  			</div> -->
 	  		</div>
 	        <table class="table table-hover">
-	          <!-- <thead>
-	            <tr>
-	              <th>가격대</th>
-	              <th></th>
-	            </tr>
-	          </thead> -->
 	          <tbody>
 	            <tr onclick="location.href='stock?idx=0'">
 	              <td>5,000원 미만</td>
@@ -76,12 +67,6 @@
   			</div>
   		</div>
   		<table class="table table-hover">
-	          <!-- <thead>
-	            <tr>
-	              <th>가격대</th>
-	              <th></th>
-	            </tr>
-	          </thead> -->
 	          <tbody>
 	          <% for(int i=0; i<list.size(); i++){%>
           	      <tr onclick="location.href='content?board_num=<%= list.get(i).getBoard_num() %>'">
