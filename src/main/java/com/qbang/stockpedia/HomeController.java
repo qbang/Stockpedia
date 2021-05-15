@@ -102,7 +102,6 @@ public class HomeController {
 			return "redirect:/";
 		}else { //로그인 성공
 			HttpSession session = req.getSession();
-			session = req.getSession();
 			session.setAttribute("unick", unick);
 			session.setAttribute("uid", uid);
 			
