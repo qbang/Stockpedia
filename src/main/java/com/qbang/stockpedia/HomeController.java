@@ -125,7 +125,6 @@ public class HomeController {
 		memberService.registerUser(uid, upw, unick);
 		
 		HttpSession session = req.getSession();
-		session = req.getSession();
 		session.setAttribute("unick", unick);
 		session.setAttribute("uid", uid);
 		
