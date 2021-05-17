@@ -150,7 +150,6 @@ public class HomeController {
 		req.setCharacterEncoding("UTF-8");
 		
 		HttpSession session = req.getSession();
-		session = req.getSession();
 		
 		String uid = (String) session.getAttribute("uid");
 		int num = memberService.getUserNum(uid);
