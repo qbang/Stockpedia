@@ -59,7 +59,6 @@ public class HomeController {
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
 	public String detail(Locale locale, Model model,  HttpServletRequest req) {
 		HttpSession session = req.getSession();
-		session = req.getSession();
 		
 		//세션에서 닉네임 가져오기
 		Object unick = session.getAttribute("unick");
