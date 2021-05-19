@@ -173,7 +173,6 @@ public class HomeController {
 		}
 		
 		HttpSession session = req.getSession();
-		session = req.getSession();
 		
 		String uid = (String) session.getAttribute("uid");
 		int member_num = memberService.getUserNum(uid);
