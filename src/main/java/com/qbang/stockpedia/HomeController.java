@@ -95,6 +95,7 @@ public class HomeController {
 		String uid = req.getParameter("uid");
 		String upw = req.getParameter("upw");
 		
+		// 로그인 
 		String unick = memberService.checkUser(uid, upw);
 		
 		if(unick.equals("")) {	//로그인 실패
@@ -121,6 +122,7 @@ public class HomeController {
 		String upw = req.getParameter("upw");
 		String unick = req.getParameter("unick");
 		
+		// 회원가입 
 		memberService.registerUser(uid, upw, unick);
 		
 		HttpSession session = req.getSession();
@@ -132,7 +134,7 @@ public class HomeController {
 	
 	@RequestMapping(value = "/community", method = RequestMethod.GET)
 	public String community(Locale locale, Model model) {
-		// 글 리스트 가져와야 함
+		// 글 리스트 가져오기 
 		List<Board> list = communityService.getContentList();
 		model.addAttribute("list", list);
 
@@ -154,7 +156,7 @@ public class HomeController {
 		int num = memberService.getUserNum(uid);
 		String title = req.getParameter("title");
 		String content = req.getParameter("content");
-		
+		// 게시글 등록 
 		communityService.registerContent(title, content, num);
 		
 		return "redirect:/community";
@@ -162,9 +164,11 @@ public class HomeController {
 	
 	@RequestMapping(value = "/content", method = RequestMethod.GET)
 	public String content(Locale locale, Model model, HttpServletRequest req, @RequestParam int board_num) {
+		//클릭 게시글 내용, 댓글 리스트 가져오기 
 		Board board = communityService.getSingleContent(board_num);
 		List<Comment> comment = communityService.getCommentList(board_num);
 		
+		//게시글로드 과정에서 오류났을 때 
 		if(board != null) {
 			model.addAttribute("content", board);
 			model.addAttribute("comment", comment);
@@ -177,6 +181,7 @@ public class HomeController {
 		String uid = (String) session.getAttribute("uid");
 		int member_num = memberService.getUserNum(uid);
 		
+		//해당 유저가 등록한 좋아요가 있는지 검사 
 		boolean check = communityService.checkExistLike(board_num, member_num);
 		if(check) {
 			model.addAttribute("like", true);
@@ -196,7 +201,7 @@ public class HomeController {
 		int member_num = memberService.getUserNum(uid);
 		int board_num = Integer.parseInt(req.getParameter("board_num"));
 		String comment = req.getParameter("comment");
-		
+		//댓글 등록 
 		communityService.registerComment(comment, board_num, member_num);
 		
 		return "redirect:/content?board_num="+board_num;
@@ -205,11 +210,10 @@ public class HomeController {
 	@RequestMapping(value = "/like", method = RequestMethod.GET)
 	public String like(Locale locale, Model model, HttpServletRequest req, @RequestParam int board_num) {
 		HttpSession session = req.getSession();
-		session = req.getSession();
 		
 		String uid = (String) session.getAttribute("uid");
 		int member_num = memberService.getUserNum(uid);
-		
+		//좋아요 등록
 		communityService.registerLike(board_num, member_num);
 		
 		return "redirect:/content?board_num="+board_num;
@@ -217,6 +221,7 @@ public class HomeController {
 	
 	@RequestMapping(value="/stock", method = RequestMethod.GET)
 	public String stock(Locale locale, Model model, @RequestParam int idx) {
+		//금액별 주식 리스트 조회 
 		List<Stock> list = processStockService.searchIdxStock(idx);
 		model.addAttribute("list", list);
 		
