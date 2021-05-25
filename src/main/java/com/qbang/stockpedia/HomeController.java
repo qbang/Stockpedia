@@ -53,7 +53,7 @@ public class HomeController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model){
-		return "detail";
+		return "login";
 	}
 	
 	@RequestMapping(value = "/detail", method = RequestMethod.GET)
@@ -229,9 +229,10 @@ public class HomeController {
 	}
 	
 	//3초마다:*/3 * * * * * 매일 오전 6시마다: 0 0 6 * * *
-	@Scheduled(cron="0 0 0/1 * * *")
+//	@Scheduled(cron="0 0 0/1 * * *")
+	@Scheduled(cron="0 38 14 * * *")
 	@Async
-	public void checkForBatch(){
+	public void batchForStock(){
 		List<Stock> stock = processStockService.searchTodayStock();
 		//등록된 오늘 날짜의 주식이 없으면 주식 정보 요청
 		if(stock == null) {
@@ -240,5 +241,9 @@ public class HomeController {
 			HashMap<String, Integer> map = processStockService.parseItemInfo(ret);
 			processStockService.registerStock(map);
 		}
+	}
+	
+	public void batchForTier() {
+		
 	}
 }

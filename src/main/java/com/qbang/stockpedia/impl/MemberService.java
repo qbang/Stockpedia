@@ -26,7 +26,7 @@ public class MemberService {
 	public String checkUser(String uid, String upw) {
 		Member member = memberDAOJPA.selectMember(uid);
 		
-		if(member != null) {
+		if(member != null) { 
 			String id = member.getUid();
 			String pw = member.getUpw();
 			String nick = member.getUnick();
@@ -47,4 +47,6 @@ public class MemberService {
 		}
 		return -1;
 	}
+	
+	
 }
