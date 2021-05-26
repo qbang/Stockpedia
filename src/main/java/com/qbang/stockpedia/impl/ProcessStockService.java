@@ -75,17 +75,20 @@ public class ProcessStockService {
 		return infoMap;
 	}
 	
+	// 오늘 날짜와 함께 주식 정보 등록 
 	public void registerStock(HashMap<String, Integer> map) {
 		Date sqlDate = new Date(new java.util.Date().getTime());
 		stockDAOJPA.insertStock(map, sqlDate);
 	}
 	
+	// 오늘 날짜로 등록된 주식 리스트 가져오기 
 	public List<Stock> searchTodayStock() {
 		Date today = new Date(new java.util.Date().getTime());
 		List<Stock> list = stockDAOJPA.selectStock(today);
 		return list;
 	}
 	
+	// 특정 가격대 주식 정보 가져오기
 	public List<Stock> searchIdxStock(int idx){
 		Date sqlDate = new Date(new java.util.Date().getTime());
 		
