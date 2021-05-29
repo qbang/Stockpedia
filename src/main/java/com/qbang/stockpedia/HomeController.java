@@ -109,11 +109,13 @@ public class HomeController {
 		}
 	}
 	
+	// 회원가입 페이지 요청 
 	@RequestMapping(value = "/reqRegister", method = RequestMethod.GET)
 	public String reqRegister(Locale locale, Model model) {
 		return "register";
 	}
 	
+	// 회원가입
 	@RequestMapping(value = "/doRegister", method = RequestMethod.POST)
 	public String doRegister(Locale locale, Model model, HttpServletRequest req) throws UnsupportedEncodingException {
 		req.setCharacterEncoding("UTF-8");
@@ -122,7 +124,6 @@ public class HomeController {
 		String upw = req.getParameter("upw");
 		String unick = req.getParameter("unick");
 		
-		// 회원가입 
 		memberService.registerUser(uid, upw, unick);
 		
 		HttpSession session = req.getSession();
