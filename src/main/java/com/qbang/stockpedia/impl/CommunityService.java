@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.qbang.stockpedia.domain.Board;
 import com.qbang.stockpedia.domain.Board_member;
 import com.qbang.stockpedia.domain.Comment;
+import com.qbang.stockpedia.domain.CommentTier;
 import com.qbang.stockpedia.persistence.CommunityDAOJPA;
 
 @Service("CommunityService")
@@ -48,8 +49,8 @@ public class CommunityService {
 	}
 	
 	// content.jsp에 필요한 댓글 리스트 가져오기 
-	public List<Comment> getCommentList(int board_num) {
-		List<Comment> list = communityDAOJPA.selectCommentList(board_num);
+	public List<CommentTier> getCommentList(int board_num) {
+		List<CommentTier> list = communityDAOJPA.selectCommentList(board_num);
 		return list;
 	}
 	

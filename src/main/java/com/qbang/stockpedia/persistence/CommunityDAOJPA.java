@@ -15,6 +15,8 @@ import com.qbang.stockpedia.domain.Board;
 import com.qbang.stockpedia.domain.Board_member;
 import com.qbang.stockpedia.domain.Board_member_id;
 import com.qbang.stockpedia.domain.Comment;
+import com.qbang.stockpedia.domain.CommentCount;
+import com.qbang.stockpedia.domain.CommentTier;
 
 @Repository("CommunityDAOJPA")
 public class CommunityDAOJPA {
@@ -93,11 +95,12 @@ public class CommunityDAOJPA {
 		}
 	}
 	
-	public List<Comment> selectCommentList(int board_num) {
-		String jpql = "select m from Comment as m where m.board_num = "+board_num;
-		List<Comment> list;
+	public List<CommentTier> selectCommentList(int board_num) {
+		String jpql = "select * from (select * from comment where comment.board_num = "+board_num+") as comment join tier on comment.member_num = tier.user_num";
+		List<CommentTier> list = null;
+		
 		try {
-			list = em.createQuery(jpql, Comment.class).getResultList();
+			list = em.createNativeQuery(jpql, CommentTier.class).getResultList();
 		}catch(Exception e){
 			list = null;
 		}
