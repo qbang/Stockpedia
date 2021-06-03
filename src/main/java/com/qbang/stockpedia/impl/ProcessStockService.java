@@ -88,6 +88,14 @@ public class ProcessStockService {
 		return list;
 	}
 	
+	
+	public List<Stock> searchYesterdayStock(){
+		Date date = new Date(new java.util.Date().getTime());
+		Date yesterday = new Date(date.getTime()+(1000*60*60*24*-1));
+		List<Stock> list = stockDAOJPA.selectStock(yesterday);
+		return list;
+	}
+	
 	// 특정 가격대 주식 정보 가져오기
 	public List<Stock> searchIdxStock(int idx){
 		Date sqlDate = new Date(new java.util.Date().getTime());
