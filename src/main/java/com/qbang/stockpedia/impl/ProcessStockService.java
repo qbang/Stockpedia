@@ -98,7 +98,14 @@ public class ProcessStockService {
 	
 	// 특정 가격대 주식 정보 가져오기
 	public List<Stock> searchIdxStock(int idx){
-		Date sqlDate = new Date(new java.util.Date().getTime());
+		Date date;
+		if(searchTodayStock().size() == 0) {
+			Date today = new Date(new java.util.Date().getTime());
+			date = new Date(today.getTime()+(1000*60*60*24*-1));
+		}else {
+			date = new Date(new java.util.Date().getTime());
+		}
+		
 		
 		int start = 0;
 		int end = 0;
@@ -121,7 +128,7 @@ public class ProcessStockService {
 			start = 100000;
 			end = 5000000;
 		}
-		List<Stock> list = stockDAOJPA.selectIdxStock(start, end, sqlDate);
+		List<Stock> list = stockDAOJPA.selectIdxStock(start, end, date);
 		return list;
 	}
 }
