@@ -22,16 +22,11 @@ public class RequestStockService {
 	private final String codeURL = "https://www.ktb.co.kr/trading/popup/itemPop.jspx";
 	private final String infoURL = "http://asp1.krx.co.kr/servlet/krx.asp.XMLSise?code=";
 	
-	private HashSet<String> codeSet = new HashSet<String>();
 	private JSONArray stockInfoArr = new JSONArray();
-	
-	// 컨테이너가 빈 객체 생성할 때 종목코드를 가져와서 static에 등록 -> 추후 타임 스케줄러 이용
-	private RequestStockService() throws IOException {
-		codeSet = getItemCode();
-	}
 	
 	// KTB투자증권에서 제공하는 종목코드조회에서 종목코드가져오기
 	public HashSet<String> getItemCode() throws IOException {
+		HashSet<String> codeSet = new HashSet<String>();
 		Document doc = Jsoup.connect(codeURL).get();
 		Elements elem = doc.select("select[name=\"StockS\"]");
 		Iterator<Element> iter1 = elem.select("option").iterator();
@@ -44,7 +39,7 @@ public class RequestStockService {
 	}
 	
 	// 종목코드로 한국거래소에 주식정보요청 template 생성
-	public JSONArray getItemInfo(){
+	public JSONArray getItemInfo(HashSet<String> codeSet){
 		for(String key : codeSet) {
 			HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
 			factory.setReadTimeout(30000);
