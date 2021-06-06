@@ -12,6 +12,7 @@
 	<class>com.qbang.stockpedia.domain.Board_member</class>
 	<class>com.qbang.stockpedia.domain.Tier</class>
 	<class>com.qbang.stockpedia.domain.CommentCount</class>
+	<class>com.qbang.stockpedia.domain.CommentTier</class>
 	
 	<properties>
 		<property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver" />
