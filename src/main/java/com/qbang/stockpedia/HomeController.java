@@ -1,8 +1,10 @@
 package com.qbang.stockpedia;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -26,11 +28,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.qbang.stockpedia.domain.Board;
 import com.qbang.stockpedia.domain.Comment;
+import com.qbang.stockpedia.domain.CommentTier;
 import com.qbang.stockpedia.domain.Stock;
 import com.qbang.stockpedia.impl.CommunityService;
 import com.qbang.stockpedia.impl.MemberService;
 import com.qbang.stockpedia.impl.ProcessStockService;
 import com.qbang.stockpedia.impl.RequestStockService;
+import com.qbang.stockpedia.impl.TierService;
 import com.sun.tools.sjavac.Log;
 
 @EnableScheduling
@@ -51,15 +55,12 @@ public class HomeController {
 	@Autowired
 	private MemberService memberService;
 	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model){
-		return "login";
-	}
+	@Autowired
+	private TierService tierService;
 	
-	@RequestMapping(value = "/detail", method = RequestMethod.GET)
-	public String detail(Locale locale, Model model,  HttpServletRequest req) {
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String home(Locale locale, Model model, HttpServletRequest req){
 		HttpSession session = req.getSession();
-		
 		//세션에서 닉네임 가져오기
 		Object unick = session.getAttribute("unick");
 		if(unick == null) {
@@ -70,13 +71,16 @@ public class HomeController {
 		
 		//오늘 날짜의 주식정보 가져오기
 		List<Stock> stock = processStockService.searchTodayStock();
+		
+		if(stock == null || stock.size() == 0) {
+			stock = processStockService.searchYesterdayStock();
+		}
+		
 		//가져온 정보에서 개수만 빼주고 모델에 넣기
-		if(stock != null) {
-			ArrayList<HashMap<String, Integer>>[] arr = processStockService.classifyItemInfo(stock);
-			for(int i=0; i<arr.length; i++) {
-				String mapName = "map"+(i+1);
-				model.addAttribute(mapName, arr[i].size());
-			}
+		ArrayList<HashMap<String, Integer>>[] arr = processStockService.classifyItemInfo(stock);
+		for(int i=0; i<arr.length; i++) {
+			String mapName = "map"+(i+1);
+			model.addAttribute(mapName, arr[i].size());
 		}
 		
 		//인기글 가져오기
@@ -85,10 +89,16 @@ public class HomeController {
 			model.addAttribute("list", board);
 		}
 		
-		return "detail";
+		return "main";
 	}
 	
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	// 로그인 페이지 요청 
+	@RequestMapping(value = "/reqLogin", method = RequestMethod.GET)
+	public String reqLogin(Locale locale, Model model) {
+		return "login";
+	}
+	
+	@RequestMapping(value = "/doLogin", method = RequestMethod.POST)
 	public String login(Locale locale, Model model, HttpServletRequest req) throws UnsupportedEncodingException {
 		req.setCharacterEncoding("UTF-8");
 		
@@ -99,13 +109,13 @@ public class HomeController {
 		String unick = memberService.checkUser(uid, upw);
 		
 		if(unick.equals("")) {	//로그인 실패
-			return "redirect:/";
+			return "redirect:/reqLogin";
 		}else { //로그인 성공
 			HttpSession session = req.getSession();
 			session.setAttribute("unick", unick);
 			session.setAttribute("uid", uid);
 			
-			return "redirect:/detail";
+			return "redirect:/";
 		}
 	}
 	
@@ -130,11 +140,17 @@ public class HomeController {
 		session.setAttribute("unick", unick);
 		session.setAttribute("uid", uid);
 		
-		return "redirect:/detail";
+		tierService.updateTier();
+		
+		return "redirect:/";
 	}
 	
 	@RequestMapping(value = "/community", method = RequestMethod.GET)
-	public String community(Locale locale, Model model) {
+	public String community(Locale locale, Model model, HttpServletRequest req) {
+		HttpSession session = req.getSession();
+		if(session.getAttribute("uid") == null) {
+			return "redirect:/reqLogin";
+		}
 		// 글 리스트 가져오기 
 		List<Board> list = communityService.getContentList();
 		model.addAttribute("list", list);
@@ -163,33 +179,34 @@ public class HomeController {
 		return "redirect:/community";
 	}
 	
-	@RequestMapping(value = "/content", method = RequestMethod.GET)
+	@RequestMapping(value = "/post", method = RequestMethod.GET)
 	public String content(Locale locale, Model model, HttpServletRequest req, @RequestParam int board_num) {
-		//클릭 게시글 내용, 댓글 리스트 가져오기 
+		HttpSession session = req.getSession();
+
+		if(session.getAttribute("uid") == null) {
+			return "redirect:/reqLogin";
+		}
+		//클릭 게시글 내용 가져오기 
 		Board board = communityService.getSingleContent(board_num);
-		List<Comment> comment = communityService.getCommentList(board_num);
 		
-		//게시글로드 과정에서 오류났을 때 
+		//게시글 로드 과정에서 오류가 나지 않았을 때 
 		if(board != null) {
+			//댓글 리스트 가져오기 
+			List<CommentTier> comment = communityService.getCommentList(board_num);
+			
 			model.addAttribute("content", board);
 			model.addAttribute("comment", comment);
 		}else {
 			return "redirect:/community";
 		}
 		
-		HttpSession session = req.getSession();
-		
-		String uid = (String) session.getAttribute("uid");
-		int member_num = memberService.getUserNum(uid);
-		
-		//해당 유저가 등록한 좋아요가 있는지 검사 
+		//현재 이용자가 등록한 좋아요가 있는지 검사 
+		int member_num = memberService.getUserNum((String) session.getAttribute("uid"));
 		boolean check = communityService.checkExistLike(board_num, member_num);
-		if(check) {
-			model.addAttribute("like", true);
-		}else {
-			model.addAttribute("like", false);
-		}
-		return "content";
+
+		model.addAttribute("like", check? true : false);
+	
+		return "post";
 	}
 	
 	@RequestMapping(value = "/comment", method = RequestMethod.POST)
@@ -205,7 +222,7 @@ public class HomeController {
 		//댓글 등록 
 		communityService.registerComment(comment, board_num, member_num);
 		
-		return "redirect:/content?board_num="+board_num;
+		return "redirect:/post?board_num="+board_num;
 	}
 	
 	@RequestMapping(value = "/like", method = RequestMethod.GET)
@@ -217,7 +234,7 @@ public class HomeController {
 		//좋아요 등록
 		communityService.registerLike(board_num, member_num);
 		
-		return "redirect:/content?board_num="+board_num;
+		return "redirect:/post?board_num="+board_num;
 	}
 	
 	@RequestMapping(value="/stock", method = RequestMethod.GET)
@@ -229,22 +246,25 @@ public class HomeController {
 		return "stock";
 	}
 	
-	//3초마다:*/3 * * * * * 매일 오전 6시마다: 0 0 6 * * *
-//	@Scheduled(cron="0 0 0/1 * * *")
-	@Scheduled(cron="0 38 14 * * *")
+	//1시간 마다 실행
+	@Scheduled(cron="0 0 0/1 * * *")
 	@Async
-	public void batchForStock(){
+	public void batchForStock() throws IOException{
 		List<Stock> stock = processStockService.searchTodayStock();
-		//등록된 오늘 날짜의 주식이 없으면 주식 정보 요청
-		if(stock == null) {
-			JSONArray ret = requestStockService.getItemInfo();
+		
+		if(stock == null || stock.size() == 0) {
+			HashSet<String> codeSet = requestStockService.getItemCode();
+			JSONArray ret = requestStockService.getItemInfo(codeSet);
 			// 종목명이랑 가격만 빼주고 DB에 넣어주기
 			HashMap<String, Integer> map = processStockService.parseItemInfo(ret);
 			processStockService.registerStock(map);
 		}
 	}
 	
+	//매주 월요일 0시에 실행
+	@Scheduled(cron="0 0 0 * * MON")
+	@Async
 	public void batchForTier() {
-		
+		tierService.updateTier();
 	}
 }
