@@ -45,9 +45,9 @@ public class StockDAOJPA {
 		emf.close();
 	}
 	
-	public List<Stock> selectStock(Date today) {
+	public List<Stock> selectStock(Date date) {
 		List<Stock> list = new ArrayList<Stock>();
-		String jpql = "select s from Stock as s where s.reg_date = '"+today+"'";
+		String jpql = "select s from Stock as s where s.reg_date = '"+date+"'";
 		try {
 			list = em.createQuery(jpql, Stock.class).getResultList();
 		}catch(Exception e){
