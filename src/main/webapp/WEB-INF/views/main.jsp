@@ -1,67 +1,100 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ page session="false" pageEncoding="UTF-8" %>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.util.List" %>
+<%@ page import="com.qbang.stockpedia.domain.Board" %>
+
+<!DOCTYPE html>
 <html>
 <head>
-	<title>스톡피디아</title>
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+	<meta charset="UTF-8">
+	<title>영차영차</title>
+	<link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-5.15.2-web/css/all.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">
+	<link rel="stylesheet" href="https://bulma.io/css/bulma-docs.min.css?v=202105031854"></head>
 	<style>
-		.btn-secondary,
-		.btn-secondary:hover,
-		.btn-secondary:focus {
-		  color: #333;
-		  text-shadow: none; /* Prevent inheritance from `body` */
+		.container{
+			margin-top: 20px;
+			width: 20%;
+			margin-bottom: 20px;
 		}
-		
-		body {
-		  text-shadow: 0 .05rem .1rem rgba(0, 0, 0, .5);
-		  box-shadow: inset 0 0 5rem rgba(0, 0, 0, .5);
+		.container .main div{
+			float: left;
+			width: 50%;
+			display: flex;
+			flex-flow: column;
+			justify-content: center;
+			algin-content: center;
+			height : 200px;
 		}
-		
-		.cover-container {
-		  max-width: 42em;
+		.right_{
+			float: right;
 		}
-		
-		.nav-masthead .nav-link {
-		  padding: .25rem 0;
-		  font-weight: 700;
-		  color: rgba(255, 255, 255, .5);
-		  background-color: transparent;
-		  border-bottom: .25rem solid transparent;
-		}
-		
-		.nav-masthead .nav-link:hover,
-		.nav-masthead .nav-link:focus {
-		  border-bottom-color: rgba(255, 255, 255, .25);
-		}
-		
-		.nav-masthead .nav-link + .nav-link {
-		  margin-left: 1rem;
-		}
-		
-		.nav-masthead .active {
-		  color: #fff;
-		  border-bottom-color: #fff;
-		}
+
 	</style>
 </head>
-<body class="d-flex h-100 text-center text-white bg-dark">
-	<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-	  <header class="mb-auto">
-	    <div>
-	      <h3 class="float-md-start mb-0">스톡피디아</h3>
-	    </div>
-	  </header>
-	  <main class="px-3">
-	  	<h1>안녕하세요</h1>
-	    <p class="lead">적은 돈으로도 투자할 수 있는 주식 상품을 찾아보세요.</p>
-	    <p class="lead">
-	      <a href="detail" class="btn btn-lg btn-secondary fw-bold border-white bg-white">구경하기</a>
-	    </p>
-	  </main>
-	
-	  <footer class="mt-auto text-white-50">
-	    <p>made by qbang</p>
-	  </footer>
+<body>
+<% List<Board> list = (List<Board>) request.getAttribute("list"); %>
+<div class="container">
+	<div class="main">
+		<div>
+			<h2 class="title pb-1">어서오세요, ${unick}님!</h2>
+			<h3 class="subtitle">적은 돈으로도 투자할 수 있는 주식을 찾아보세요.</h3>
+		</div>
+		<div>
+			<img height="200" width="200" src="resources/gif/main_animation.gif">
+		</div>
 	</div>
+	
+	<table class="table is-hoverable is-fullwidth">
+		 <thead>
+		 	<tr>
+		 		<th colspan="2">가격</th>
+		 	</tr>
+		 </thead>
+		 <tbody>
+		 		<tr onclick="location.href='stock?idx=0'">
+		            <td>5,000원 미만</td>
+		            <td><span class="tag is-primary right_">${map1}</span></td>
+		         </tr>
+		         <tr onclick="location.href='stock?idx=1'">
+		            <td>5,000 - 10,000원</td>
+		            <td><span class="tag is-primary right_">${map2}</span></td>
+		         </tr>
+			        <tr onclick="location.href='stock?idx=2'">
+		            <td>10,000 - 20,000원</td>
+		            <td><span class="tag is-primary right_">${map3}</span></td>
+		         </tr>
+		         <tr onclick="location.href='stock?idx=3'">
+		            <td>20,000 - 50,000원</td>
+		            <td><span class="tag is-primary right_">${map4}</span></td>
+		         </tr>
+			        <tr onclick="location.href='stock?idx=4'">
+		            <td>50,000 - 100,000원</td>
+		            <td><span class="tag is-primary right_">${map5}</span></td>
+		         </tr>
+			        <tr onclick="location.href='stock?idx=5'">
+		            <td>100,000원 이상</td>
+		            <td><span class="tag is-primary right_">${map6}</span></td>
+		          </tr>
+		  </tbody>
+	</table>
+  
+	<table class="table is-hoverable is-fullwidth">
+		<thead>
+			<tr>
+				<th>실시간 인기글</th>
+				<th><a class="right_" href="community" style="color: #00947E; font-size: small;">더보기</a></th>
+			</tr>
+		</thead>
+		<tbody>
+		     <% for(int i=0; i<list.size(); i++){%>
+	 	     <tr onclick="location.href='post?board_num=<%= list.get(i).getBoard_num() %>'">
+		     	<td colspan="2"><%= list.get(i).getTitle() %></td>
+		     </tr>
+		     <% }%>
+		</tbody>
+	</table>
+</div>
 </body>
+
 </html>
