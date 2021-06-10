@@ -6,18 +6,30 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="UTF-8">
-<title>스톡피디아</title>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+	<meta charset="UTF-8">
+	<title>영차영차</title>
+	<link rel="stylesheet" href="https://bulma.io/vendor/fontawesome-free-5.15.2-web/css/all.min.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/docsearch.js@2/dist/cdn/docsearch.min.css">
+	<link rel="stylesheet" href="https://bulma.io/css/bulma-docs.min.css?v=202105031854"></head>
+	<style>
+		.container{
+			margin-top: 30px;
+			width: 20%;
+			margin-bottom: 30px;
+		}
+		.th_value{
+			width: 100px;
+		}
+	</style>
 </head>
 <body>
 <%  List<Stock> list = (List<Stock>) request.getAttribute("list"); %>
 <div class="container">
-	<table class="table table-hover">
+	<table class="table is-hoverable is-fullwidth">
     <thead>
       <tr>
         <th>종목 이름</th>
-        <th>가격</th>
+        <th class="th_value">가격(원)</th>
       </tr>
     </thead>
     <tbody>
