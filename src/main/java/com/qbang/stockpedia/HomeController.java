@@ -148,7 +148,7 @@ public class HomeController {
 	@RequestMapping(value = "/community", method = RequestMethod.GET)
 	public String community(Locale locale, Model model, HttpServletRequest req) {
 		HttpSession session = req.getSession();
-		if(session.getAttribute("uid") == null) {
+		if(HttpSession.get.getAttribute("uid") == null) {
 			return "redirect:/reqLogin";
 		}
 		// 글 리스트 가져오기 
