@@ -25,7 +25,6 @@
 				font-weight: bold;
 			}
 			.p_bottom{
-				font-size: small;
 				text-align: center;
 				color: #7A7A7A;
 			}

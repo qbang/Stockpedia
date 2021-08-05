@@ -7,10 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.json.JSONArray;
@@ -27,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.qbang.stockpedia.domain.Board;
-import com.qbang.stockpedia.domain.Comment;
 import com.qbang.stockpedia.domain.CommentTier;
 import com.qbang.stockpedia.domain.Stock;
 import com.qbang.stockpedia.impl.CommunityService;
@@ -35,7 +31,6 @@ import com.qbang.stockpedia.impl.MemberService;
 import com.qbang.stockpedia.impl.ProcessStockService;
 import com.qbang.stockpedia.impl.RequestStockService;
 import com.qbang.stockpedia.impl.TierService;
-import com.sun.tools.sjavac.Log;
 
 @EnableScheduling
 @Controller
@@ -148,7 +143,7 @@ public class HomeController {
 	@RequestMapping(value = "/community", method = RequestMethod.GET)
 	public String community(Locale locale, Model model, HttpServletRequest req) {
 		HttpSession session = req.getSession();
-		if(HttpSession.get.getAttribute("uid") == null) {
+		if(session.getAttribute("uid") == null) {
 			return "redirect:/reqLogin";
 		}
 		// 글 리스트 가져오기 
