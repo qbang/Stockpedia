@@ -1,6 +1,7 @@
 package com.qbang.stockpedia.impl;
 
 import java.sql.Date;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -82,26 +83,41 @@ public class ProcessStockService {
 	}
 	
 	// 오늘 날짜로 등록된 주식 리스트 가져오기 
-	public List<Stock> searchTodayStock() {
+	public List<Stock> searchTodayStock(){
 		Date today = new Date(new java.util.Date().getTime());
 		List<Stock> list = stockDAOJPA.selectStock(today);
 		return list;
 	}
 	
 	
-	public List<Stock> searchYesterdayStock(){
+	public List<Stock> searchPastStock(){
 		Date date = new Date(new java.util.Date().getTime());
-		Date yesterday = new Date(date.getTime()+(1000*60*60*24*-1));
-		List<Stock> list = stockDAOJPA.selectStock(yesterday);
+		Date past;
+		List<Stock> list = null;
+		
+		for(int i=1; i<=365; i++) {
+			past = new Date(date.getTime()+(1000*60*60*24*-i));
+			list = stockDAOJPA.selectStock(past);
+			if(list.size() != 0) {
+				break;
+			}
+		}
+		
 		return list;
 	}
 	
 	// 특정 가격대 주식 정보 가져오기
-	public List<Stock> searchIdxStock(int idx){
-		Date date;
+	public List<Stock> searchIdxStock(int idx) {
+		Date date = null;
 		if(searchTodayStock().size() == 0) {
 			Date today = new Date(new java.util.Date().getTime());
-			date = new Date(today.getTime()+(1000*60*60*24*-1));
+			for(int i=1; i<=365; i++) {
+				date = new Date(today.getTime()+(1000*60*60*24*-i));
+				if(stockDAOJPA.selectStock(date).size() != 0) {
+					break;
+				}
+			}
+//			date = new Date(today.getTime()+(1000*60*60*24*-1));
 		}else {
 			date = new Date(new java.util.Date().getTime());
 		}

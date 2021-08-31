@@ -1,6 +1,8 @@
 package com.qbang.stockpedia.persistence;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +49,8 @@ public class StockDAOJPA {
 	
 	public List<Stock> selectStock(Date date) {
 		List<Stock> list = new ArrayList<Stock>();
-		String jpql = "select s from Stock as s where s.reg_date = '"+date+"'";
+//		String jpql = "select s from Stock as s where s.reg_date = '"+date+"'";
+		String jpql = "select s from Stock as s where s.reg_date = '2021-06-04'";
 		try {
 			list = em.createQuery(jpql, Stock.class).getResultList();
 		}catch(Exception e){
@@ -56,9 +59,10 @@ public class StockDAOJPA {
 		return list;
 	}
 	
-	public List<Stock> selectIdxStock(int start, int end, Date today){
+	public List<Stock> selectIdxStock(int start, int end, Date date){
 		List<Stock> list = new ArrayList<Stock>();
-		String jpql = "select s from Stock as s where s.reg_date = '"+today+"' and s.value >= "+start+" and s.value < "+end+" order by s.value";
+//		String jpql = "select s from Stock as s where s.reg_date = '"+date+"' and s.value >= "+start+" and s.value < "+end+" order by s.value";
+		String jpql = "select s from Stock as s where s.reg_date = '2021-06-04' and s.value >= "+start+" and s.value < "+end+" order by s.value";
 		try {
 			list = em.createQuery(jpql, Stock.class).getResultList();
 		}catch(Exception e){
