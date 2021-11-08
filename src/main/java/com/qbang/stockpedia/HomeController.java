@@ -2,6 +2,7 @@ package com.qbang.stockpedia;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,6 +14,16 @@ import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParameter;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.JobParametersInvalidException;
+import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
+import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
+import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -29,6 +40,7 @@ import com.qbang.stockpedia.domain.Stock;
 import com.qbang.stockpedia.impl.CommunityService;
 import com.qbang.stockpedia.impl.MemberService;
 import com.qbang.stockpedia.impl.ProcessStockService;
+import com.qbang.stockpedia.impl.RequestJobConfig;
 import com.qbang.stockpedia.impl.RequestStockService;
 import com.qbang.stockpedia.impl.TierService;
 
@@ -53,6 +65,12 @@ public class HomeController {
 	@Autowired
 	private TierService tierService;
 	
+	@Autowired
+	private JobLauncher jobLauncher;
+	
+	@Autowired
+	private Job ExampleJob;
+	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model, HttpServletRequest req){
 		HttpSession session = req.getSession();
@@ -68,7 +86,7 @@ public class HomeController {
 		List<Stock> stock = processStockService.searchTodayStock();
 		
 		if(stock == null || stock.size() == 0) {
-			stock = processStockService.searchYesterdayStock();
+			stock = processStockService.searchPastStock();
 		}
 		
 		//가져온 정보에서 개수만 빼주고 모델에 넣기
@@ -233,7 +251,7 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value="/stock", method = RequestMethod.GET)
-	public String stock(Locale locale, Model model, @RequestParam int idx) {
+	public String stock(Locale locale, Model model, @RequestParam int idx) throws ParseException {
 		//금액별 주식 리스트 조회 
 		List<Stock> list = processStockService.searchIdxStock(idx);
 		model.addAttribute("list", list);
@@ -242,18 +260,28 @@ public class HomeController {
 	}
 	
 	//1시간 마다 실행
-	@Scheduled(cron="0 0 0/1 * * *")
+//	@Scheduled(cron="0 0 0/1 * * *")
+//	@Async
+//	public void batchForStock() throws IOException, ParseException{
+//		List<Stock> stock = processStockService.searchTodayStock();
+//		
+//		if(stock == null || stock.size() == 0) {
+//			HashSet<String> codeSet = requestStockService.getItemCode();
+//			JSONArray ret = requestStockService.getItemInfo(codeSet);
+//			// 종목명이랑 가격만 빼주고 DB에 넣어주기
+//			HashMap<String, Integer> map = processStockService.parseItemInfo(ret);
+//			processStockService.registerStock(map);
+//		}
+//	
+	@Scheduled(cron="0 * * * * *")
 	@Async
-	public void batchForStock() throws IOException{
-		List<Stock> stock = processStockService.searchTodayStock();
-		
-		if(stock == null || stock.size() == 0) {
-			HashSet<String> codeSet = requestStockService.getItemCode();
-			JSONArray ret = requestStockService.getItemInfo(codeSet);
-			// 종목명이랑 가격만 빼주고 DB에 넣어주기
-			HashMap<String, Integer> map = processStockService.parseItemInfo(ret);
-			processStockService.registerStock(map);
-		}
+	public void test() throws JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
+//		List<Stock> stock = processStockService.searchTodayStock();
+//		if(stock == null || stock.size() == 0) {
+//			JobExecution jobExecution = jobLauncher.run(ExampleJob, null);
+//		}
+		JobParameters parameters = new JobParameters();
+		JobExecution jobExecution = jobLauncher.run(ExampleJob, parameters);
 	}
 	
 	//매주 월요일 0시에 실행
