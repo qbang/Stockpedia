@@ -2,6 +2,7 @@ package com.qbang.stockpedia.persistence;
 
 import java.sql.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -23,6 +24,8 @@ public class CommunityDAOJPA {
 	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Stockpedia");
 	private EntityManager em = emf.createEntityManager();
 	private EntityTransaction tx = em.getTransaction();
+
+	private final String GET_TOP_CONTENT = "select board.* from board right join (select board_num, count(*) as cnt from board_member group by board_num order by cnt desc limit 6) as s on s.board_num = board.board_num";
 	
 	public void insertContent(String title, String content, int num, Date today) {
 		try {
@@ -53,17 +56,11 @@ public class CommunityDAOJPA {
 		}
 		return list;
 	}
-	
-	public List<Board> selectContentTopList() {
-		String jpql = "select board.* from board right join (select board_num, count(*) as cnt from board_member group by board_num order by cnt desc limit 6) as s on s.board_num = board.board_num";
-		List<Board> list = null;
-		Query query = em.createNativeQuery(jpql, Board.class);
-		try {
-			list = (List<Board>) query.getResultList();
-		}catch(Exception e){
-			list = null;
-		}
-		return list;
+
+	// detail.jsp에 필요한 인기글 가져오기
+	public Optional<List<Board>> selectContentTopList() {
+		Query query = em.createNativeQuery(GET_TOP_CONTENT, Board.class);
+		return Optional.ofNullable((List<Board>) query.getResultList());
 	}
 	
 	public Board selectSingleContent(int board_num) {

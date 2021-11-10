@@ -32,10 +32,10 @@ public class CommunityService {
 	}
 	
 	// detail.jsp에 필요한 인기글 가져오기 
-	public List<Board> getTopContentList() {
-		List<Board> list = communityDAOJPA.selectContentTopList();
-		return list;
-	}
+//	public List<Board> getTopContentList() {
+//		List<Board> list = communityDAOJPA.selectContentTopList();
+//		return list;
+//	}
 	
 	// content.jsp에 필요한 글 정보 가져오기 
 	public Board getSingleContent(int board_num) {

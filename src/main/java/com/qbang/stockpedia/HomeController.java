@@ -3,22 +3,17 @@ package com.qbang.stockpedia;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Locale;
+import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.qbang.stockpedia.persistence.CommunityDAOJPA;
 import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
-import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
@@ -40,7 +35,6 @@ import com.qbang.stockpedia.domain.Stock;
 import com.qbang.stockpedia.impl.CommunityService;
 import com.qbang.stockpedia.impl.MemberService;
 import com.qbang.stockpedia.impl.ProcessStockService;
-import com.qbang.stockpedia.impl.RequestJobConfig;
 import com.qbang.stockpedia.impl.RequestStockService;
 import com.qbang.stockpedia.impl.TierService;
 
@@ -64,12 +58,9 @@ public class HomeController {
 	
 	@Autowired
 	private TierService tierService;
-	
+
 	@Autowired
-	private JobLauncher jobLauncher;
-	
-	@Autowired
-	private Job ExampleJob;
+	private CommunityDAOJPA communityDAOJPA;
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model, HttpServletRequest req){
@@ -97,9 +88,9 @@ public class HomeController {
 		}
 		
 		//인기글 가져오기
-		List<Board> board = communityService.getTopContentList();
-		if(board != null) {
-			model.addAttribute("list", board);
+		Optional<List<Board>> board = communityDAOJPA.selectContentTopList();
+		if(board.isPresent()) { // re: null일 때 콘텐츠를 어떻게 보여줄건지 처리 필요
+			model.addAttribute("list", board.get());
 		}
 		
 		return "main";
@@ -260,28 +251,18 @@ public class HomeController {
 	}
 	
 	//1시간 마다 실행
-//	@Scheduled(cron="0 0 0/1 * * *")
-//	@Async
-//	public void batchForStock() throws IOException, ParseException{
-//		List<Stock> stock = processStockService.searchTodayStock();
-//		
-//		if(stock == null || stock.size() == 0) {
-//			HashSet<String> codeSet = requestStockService.getItemCode();
-//			JSONArray ret = requestStockService.getItemInfo(codeSet);
-//			// 종목명이랑 가격만 빼주고 DB에 넣어주기
-//			HashMap<String, Integer> map = processStockService.parseItemInfo(ret);
-//			processStockService.registerStock(map);
-//		}
-//	
-	@Scheduled(cron="0 * * * * *")
+	@Scheduled(cron="0 0 0/1 * * *")
 	@Async
-	public void test() throws JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobParametersInvalidException {
-//		List<Stock> stock = processStockService.searchTodayStock();
-//		if(stock == null || stock.size() == 0) {
-//			JobExecution jobExecution = jobLauncher.run(ExampleJob, null);
-//		}
-		JobParameters parameters = new JobParameters();
-		JobExecution jobExecution = jobLauncher.run(ExampleJob, parameters);
+	public void batchForStock() throws IOException, ParseException {
+		List<Stock> stock = processStockService.searchTodayStock();
+
+		if (stock == null || stock.size() == 0) {
+			HashSet<String> codeSet = requestStockService.getItemCode();
+			JSONArray ret = requestStockService.getItemInfo(codeSet);
+			// 종목명이랑 가격만 빼주고 DB에 넣어주기
+			HashMap<String, Integer> map = processStockService.parseItemInfo(ret);
+			processStockService.registerStock(map);
+		}
 	}
 	
 	//매주 월요일 0시에 실행
