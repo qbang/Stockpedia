@@ -3,6 +3,7 @@ package com.qbang.stockpedia;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -25,9 +26,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import com.qbang.stockpedia.domain.Board;
 import com.qbang.stockpedia.domain.CommentTier;
@@ -61,6 +60,8 @@ public class HomeController {
 
 	@Autowired
 	private CommunityDAOJPA communityDAOJPA;
+
+	SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model, HttpServletRequest req){
@@ -118,7 +119,9 @@ public class HomeController {
 			HttpSession session = req.getSession();
 			session.setAttribute("unick", unick);
 			session.setAttribute("uid", uid);
-			
+
+			logger.info("# login id = " + uid + " at "+ simpleDateFormat.format(System.currentTimeMillis()));
+
 			return "redirect:/";
 		}
 	}
