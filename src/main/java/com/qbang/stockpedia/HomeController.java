@@ -21,6 +21,7 @@ import org.springframework.batch.core.repository.JobExecutionAlreadyRunningExcep
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -96,34 +97,29 @@ public class HomeController {
 		
 		return "main";
 	}
-	
-	// 로그인 페이지 요청 
-	@RequestMapping(value = "/reqLogin", method = RequestMethod.GET)
-	public String reqLogin(Locale locale, Model model) {
-		return "login";
-	}
-	
-	@RequestMapping(value = "/doLogin", method = RequestMethod.POST)
-	public String login(Locale locale, Model model, HttpServletRequest req) throws UnsupportedEncodingException {
-		req.setCharacterEncoding("UTF-8");
-		
-		String uid = req.getParameter("uid");
-		String upw = req.getParameter("upw");
-		
-		// 로그인 
-		String unick = memberService.checkUser(uid, upw);
-		
-		if(unick.equals("")) {	//로그인 실패
-			return "redirect:/reqLogin";
-		}else { //로그인 성공
-			HttpSession session = req.getSession();
-			session.setAttribute("unick", unick);
-			session.setAttribute("uid", uid);
 
-			logger.info("# login id = " + uid + " at "+ simpleDateFormat.format(System.currentTimeMillis()));
+	@RequestMapping(value = "/login")
+	public String login(HttpMethod httpMethod, HttpServletRequest request) throws UnsupportedEncodingException {
+		if (httpMethod.matches("GET")) {
+			return "login";
+		} else if (httpMethod.matches("POST")) {
+			request.setCharacterEncoding("UTF-8");
 
-			return "redirect:/";
+			String uid = request.getParameter("uid");
+			String upw = request.getParameter("upw");
+			String unick = memberService.checkUser(uid, upw);
+
+			if (unick.equals("")) {	//로그인 실패
+				return "redirect:/login";
+			} else { //로그인 성공
+				HttpSession session = request.getSession();
+				session.setAttribute("unick", unick);
+				session.setAttribute("uid", uid);
+
+				logger.info("# login id = " + uid + " at "+ simpleDateFormat.format(System.currentTimeMillis()));
+			}
 		}
+		return "redirect:/";
 	}
 	
 	// 회원가입 페이지 요청 
@@ -156,7 +152,7 @@ public class HomeController {
 	public String community(Locale locale, Model model, HttpServletRequest req) {
 		HttpSession session = req.getSession();
 		if(session.getAttribute("uid") == null) {
-			return "redirect:/reqLogin";
+			return "redirect:/login";
 		}
 		// 글 리스트 가져오기 
 		List<Board> list = communityService.getContentList();
@@ -191,7 +187,7 @@ public class HomeController {
 		HttpSession session = req.getSession();
 
 		if(session.getAttribute("uid") == null) {
-			return "redirect:/reqLogin";
+			return "redirect:/login";
 		}
 		//클릭 게시글 내용 가져오기 
 		Board board = communityService.getSingleContent(board_num);
