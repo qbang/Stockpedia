@@ -109,31 +109,30 @@ public class HomeController {
 		}
 		return "redirect:/";
 	}
-	
-	// 회원가입 페이지 요청 
-	@RequestMapping(value = "/reqRegister", method = RequestMethod.GET)
-	public String reqRegister() {
-		return "register";
-	}
-	
-	// 회원가입
-	@RequestMapping(value = "/doRegister", method = RequestMethod.POST)
-	public String doRegister(HttpServletRequest req) throws UnsupportedEncodingException {
-		req.setCharacterEncoding("UTF-8");
-		
-		String uid = req.getParameter("uid");
-		String upw = req.getParameter("upw");
-		String unick = req.getParameter("unick");
-		
-		memberService.registerUser(uid, upw, unick);
-		
-		HttpSession session = req.getSession();
-		session.setAttribute("unick", unick);
-		session.setAttribute("uid", uid);
-		
-		tierService.updateTier();
-		
-		return "redirect:/";
+
+	@RequestMapping(value = "/member")
+	public String member(HttpMethod httpMethod, HttpServletRequest request) throws UnsupportedEncodingException {
+		String result = "";
+		if (httpMethod.matches("GET")) {
+			result = "register";
+		} else if (httpMethod.matches("POST")) {
+			request.setCharacterEncoding("UTF-8");
+
+			String uid = request.getParameter("uid");
+			String upw = request.getParameter("upw");
+			String unick = request.getParameter("unick");
+
+			memberService.registerUser(uid, upw, unick);
+
+			HttpSession session = request.getSession();
+			session.setAttribute("unick", unick);
+			session.setAttribute("uid", uid);
+
+			tierService.updateTier();
+
+			result = "redirect:/";
+		}
+		return result;
 	}
 	
 	@RequestMapping(value = "/community", method = RequestMethod.GET)
