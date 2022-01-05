@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -84,34 +85,29 @@ public class HomeController {
 		
 		return "main";
 	}
-	
-	// 로그인 페이지 요청 
-	@RequestMapping(value = "/reqLogin", method = RequestMethod.GET)
-	public String reqLogin() {
-		return "login";
-	}
 
-	@RequestMapping(value = "/doLogin", method = RequestMethod.POST)
-	public String login(HttpServletRequest req) throws UnsupportedEncodingException {
-		req.setCharacterEncoding("UTF-8");
+	@RequestMapping(value = "/login")
+	public String login(HttpMethod httpMethod, HttpServletRequest request) throws UnsupportedEncodingException {
+		if (httpMethod.matches("GET")) {
+			return "login";
+		} else if (httpMethod.matches("POST")) {
+			request.setCharacterEncoding("UTF-8");
 
-		String uid = req.getParameter("uid");
-		String upw = req.getParameter("upw");
-		
-		// 로그인 
-		String unick = memberService.checkUser(uid, upw);
-		
-		if (unick.equals("")) {	//로그인 실패
-			return "redirect:/reqLogin";
-		} else { //로그인 성공
-			HttpSession session = req.getSession();
-			session.setAttribute("unick", unick);
-			session.setAttribute("uid", uid);
+			String uid = request.getParameter("uid");
+			String upw = request.getParameter("upw");
+			String unick = memberService.checkUser(uid, upw);
 
-			logger.info("# login id = " + uid + " at "+ simpleDateFormat.format(System.currentTimeMillis()));
+			if (unick.equals("")) {	//로그인 실패
+				return "redirect:/login";
+			} else { //로그인 성공
+				HttpSession session = request.getSession();
+				session.setAttribute("unick", unick);
+				session.setAttribute("uid", uid);
 
-			return "redirect:/";
+				logger.info("# login id = " + uid + " at "+ simpleDateFormat.format(System.currentTimeMillis()));
+			}
 		}
+		return "redirect:/";
 	}
 	
 	// 회원가입 페이지 요청 
@@ -143,8 +139,8 @@ public class HomeController {
 	@RequestMapping(value = "/community", method = RequestMethod.GET)
 	public String community(Model model, HttpServletRequest req) {
 		HttpSession session = req.getSession();
-		if (session.getAttribute("uid") == null) {
-			return "redirect:/reqLogin";
+		if(session.getAttribute("uid") == null) {
+			return "redirect:/login";
 		}
 		// 글 리스트 가져오기 
 		List<Board> list = communityService.getContentList();
@@ -178,8 +174,8 @@ public class HomeController {
 	public String content(Model model, HttpServletRequest req, @RequestParam int board_num) {
 		HttpSession session = req.getSession();
 
-		if (session.getAttribute("uid") == null) {
-			return "redirect:/reqLogin";
+		if(session.getAttribute("uid") == null) {
+			return "redirect:/login";
 		}
 		//클릭 게시글 내용 가져오기 
 		Board board = communityService.getSingleContent(board_num);

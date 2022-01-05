@@ -18,7 +18,7 @@
 </head>
 <body>
 <div class="container">
-  <form action="doLogin" method="post">
+  <form action="login" method="post">
     <img src="resources/gif/main_animation.gif">
  	<div class="field">
 	  <div class="control">
