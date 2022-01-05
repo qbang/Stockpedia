@@ -33,7 +33,7 @@
   	<button class="button is-primary">확인</button>
   </form>
   <div style="text-align: center;">
-  	<a href="reqRegister" style="color: #00947E; font-size: small;">아직 회원이 아니신가요?</a>
+  	<a href="member" style="color: #00947E; font-size: small;">아직 회원이 아니신가요?</a>
   </div>
 </div>
 </body>

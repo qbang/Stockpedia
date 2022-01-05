@@ -19,7 +19,7 @@
 
 <body>
 <div class="container">
-  <form action="doRegister" method="post">
+  <form action="member" method="post">
     <img src="resources/gif/main_animation.gif">
  	<div class="field">
 	  <div class="control">
