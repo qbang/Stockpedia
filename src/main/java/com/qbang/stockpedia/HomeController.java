@@ -23,7 +23,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -214,16 +213,17 @@ public class HomeController {
 		
 		return "redirect:/post?board_num=" + board_num;
 	}
-	
-	@RequestMapping(value = "/like", method = RequestMethod.GET)
-	public String like(HttpServletRequest req, @RequestParam int board_num) {
-		HttpSession session = req.getSession();
-		
+
+	@RequestMapping(value = "/like", method = RequestMethod.POST)
+	public String like(HttpServletRequest request) {
+		HttpSession session = request.getSession();
+
+		String board_num = request.getParameter("board_num");
 		String uid = (String) session.getAttribute("uid");
 		int member_num = memberService.getUserNum(uid);
-		//좋아요 등록
-		communityService.registerLike(board_num, member_num);
-		
+		// 이미 좋아요를 눌렀는데 또 눌렀을 때 처리 필요
+		communityService.registerLike(Integer.parseInt(board_num), member_num);
+
 		return "redirect:/post?board_num=" + board_num;
 	}
 	
