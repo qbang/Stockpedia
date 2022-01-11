@@ -1,6 +1,8 @@
 package com.qbang.stockpedia.impl;
 
 import javax.annotation.Resource;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -9,13 +11,10 @@ import com.qbang.stockpedia.persistence.MemberDAOJPA;
 
 
 @Service("MemberService")
+@RequiredArgsConstructor
 public class MemberService {
 	private final MemberDAOJPA memberDAOJPA;
-	
-	public MemberService() {
-		this.memberDAOJPA = new MemberDAOJPA();
-	}
-	
+
 	private BCryptPasswordEncoder passwordEcoder = new BCryptPasswordEncoder();
 	
 	//회원가입

@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import com.qbang.stockpedia.domain.Board;
@@ -14,12 +15,9 @@ import com.qbang.stockpedia.domain.CommentTier;
 import com.qbang.stockpedia.persistence.CommunityDAOJPA;
 
 @Service("CommunityService")
+@RequiredArgsConstructor
 public class CommunityService {
 	private final CommunityDAOJPA communityDAOJPA;
-
-	public CommunityService() {
-		this.communityDAOJPA = new CommunityDAOJPA();
-	}
 	
 	private Date today = new Date(new java.util.Date().getTime());
 	

@@ -2,6 +2,7 @@ package com.qbang.stockpedia.impl;
 
 import com.qbang.stockpedia.domain.Stock;
 import com.qbang.stockpedia.persistence.StockDAOJPA;
+import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
@@ -12,13 +13,10 @@ import java.util.HashMap;
 import java.util.List;
 
 @Service("ProcessStockService")
+@RequiredArgsConstructor
 public class ProcessStockService {
 	private final StockDAOJPA stockDAOJPA;
 
-	public ProcessStockService() {
-		this.stockDAOJPA = new StockDAOJPA();
-	}
-	
 	private HashMap<String, Integer> infoMap = new HashMap<String, Integer>();
 	
 	// 가격대별로 분류해서 arraylist에 넣어주기

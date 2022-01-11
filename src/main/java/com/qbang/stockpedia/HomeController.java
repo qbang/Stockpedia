@@ -5,6 +5,7 @@ import com.qbang.stockpedia.domain.CommentTier;
 import com.qbang.stockpedia.domain.Stock;
 import com.qbang.stockpedia.impl.*;
 import com.qbang.stockpedia.persistence.CommunityDAOJPA;
+import lombok.RequiredArgsConstructor;
 import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -27,6 +28,7 @@ import java.util.*;
 
 @EnableScheduling
 @Controller
+@RequiredArgsConstructor
 public class HomeController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
@@ -38,15 +40,6 @@ public class HomeController {
 	private final MemberService memberService;
 	private final TierService tierService;
 	private final CommunityDAOJPA communityDAOJPA;
-
-	HomeController() {
-		this.requestStockService = new RequestStockService();
-		this.processStockService = new ProcessStockService();
-		this.communityService = new CommunityService();
-		this.memberService = new MemberService();
-		this.tierService = new TierService();
-		this.communityDAOJPA = new CommunityDAOJPA();
-	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model, HttpServletRequest req) {
