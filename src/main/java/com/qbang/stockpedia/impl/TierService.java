@@ -1,18 +1,18 @@
 package com.qbang.stockpedia.impl;
 
-import java.util.List;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 import com.qbang.stockpedia.domain.CommentCount;
 import com.qbang.stockpedia.persistence.TierDAOJPA;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service("TierService")
 public class TierService {
-	@Resource(name="TierDAOJPA")
 	private TierDAOJPA tierDAOJPA;
+
+	TierService() {
+		this.tierDAOJPA = new TierDAOJPA();
+	}
 	
 	public void updateTier() {
 		List<CommentCount> list = tierDAOJPA.selectCommentCount();

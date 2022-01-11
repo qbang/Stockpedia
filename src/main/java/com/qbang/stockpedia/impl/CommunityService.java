@@ -15,8 +15,11 @@ import com.qbang.stockpedia.persistence.CommunityDAOJPA;
 
 @Service("CommunityService")
 public class CommunityService {
-	@Resource(name="CommunityDAOJPA")
 	private CommunityDAOJPA communityDAOJPA;
+
+	CommunityService() {
+		this.communityDAOJPA = new CommunityDAOJPA();
+	}
 	
 	private Date today = new Date(new java.util.Date().getTime());
 	
