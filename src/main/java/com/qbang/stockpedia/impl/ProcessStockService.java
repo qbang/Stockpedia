@@ -15,7 +15,7 @@ import java.util.List;
 public class ProcessStockService {
 	private StockDAOJPA stockDAOJPA;
 
-	ProcessStockService() {
+	public ProcessStockService() {
 		this.stockDAOJPA = new StockDAOJPA();
 	}
 	

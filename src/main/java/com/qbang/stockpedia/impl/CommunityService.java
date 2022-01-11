@@ -17,7 +17,7 @@ import com.qbang.stockpedia.persistence.CommunityDAOJPA;
 public class CommunityService {
 	private CommunityDAOJPA communityDAOJPA;
 
-	CommunityService() {
+	public CommunityService() {
 		this.communityDAOJPA = new CommunityDAOJPA();
 	}
 	
