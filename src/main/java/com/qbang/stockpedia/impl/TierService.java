@@ -10,7 +10,7 @@ import java.util.List;
 public class TierService {
 	private TierDAOJPA tierDAOJPA;
 
-	TierService() {
+	public TierService() {
 		this.tierDAOJPA = new TierDAOJPA();
 	}
 	

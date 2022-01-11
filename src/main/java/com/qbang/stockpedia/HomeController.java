@@ -8,7 +8,6 @@ import com.qbang.stockpedia.persistence.CommunityDAOJPA;
 import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpMethod;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -33,23 +32,21 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-	@Autowired
 	private RequestStockService requestStockService;
-	
-	@Autowired
 	private ProcessStockService processStockService;
-	
-	@Autowired
 	private CommunityService communityService;
-	
-	@Autowired
 	private MemberService memberService;
-	
-	@Autowired
 	private TierService tierService;
-
-	@Autowired
 	private CommunityDAOJPA communityDAOJPA;
+
+	HomeController() {
+		this.requestStockService = new RequestStockService();
+		this.processStockService = new ProcessStockService();
+		this.communityService = new CommunityService();
+		this.memberService = new MemberService();
+		this.tierService = new TierService();
+		this.communityDAOJPA = new CommunityDAOJPA();
+	}
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model, HttpServletRequest req) {

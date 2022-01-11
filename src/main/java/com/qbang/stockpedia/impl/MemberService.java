@@ -12,7 +12,7 @@ import com.qbang.stockpedia.persistence.MemberDAOJPA;
 public class MemberService {
 	private MemberDAOJPA memberDAOJPA;
 	
-	MemberService() {
+	public MemberService() {
 		this.memberDAOJPA = new MemberDAOJPA();
 	}
 	
