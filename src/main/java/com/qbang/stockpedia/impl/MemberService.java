@@ -10,9 +10,11 @@ import com.qbang.stockpedia.persistence.MemberDAOJPA;
 
 @Service("MemberService")
 public class MemberService {
-	
-	@Resource(name="MemberDAOJPA")
 	private MemberDAOJPA memberDAOJPA;
+	
+	MemberService() {
+		this.memberDAOJPA = new MemberDAOJPA();
+	}
 	
 	private BCryptPasswordEncoder passwordEcoder = new BCryptPasswordEncoder();
 	

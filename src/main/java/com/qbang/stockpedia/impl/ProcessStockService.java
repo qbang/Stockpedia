@@ -1,24 +1,23 @@
 package com.qbang.stockpedia.impl;
 
-import java.sql.Date;
-import java.text.ParseException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import javax.annotation.Resource;
-
+import com.qbang.stockpedia.domain.Stock;
+import com.qbang.stockpedia.persistence.StockDAOJPA;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.stereotype.Service;
 
-import com.qbang.stockpedia.domain.Stock;
-import com.qbang.stockpedia.persistence.StockDAOJPA;
+import java.sql.Date;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Service("ProcessStockService")
 public class ProcessStockService {
-	@Resource(name="StockDAOJPA")
 	private StockDAOJPA stockDAOJPA;
+
+	ProcessStockService() {
+		this.stockDAOJPA = new StockDAOJPA();
+	}
 	
 	private HashMap<String, Integer> infoMap = new HashMap<String, Integer>();
 	
