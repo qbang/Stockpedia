@@ -32,12 +32,12 @@ public class HomeController {
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-	private RequestStockService requestStockService;
-	private ProcessStockService processStockService;
-	private CommunityService communityService;
-	private MemberService memberService;
-	private TierService tierService;
-	private CommunityDAOJPA communityDAOJPA;
+	private final RequestStockService requestStockService;
+	private final ProcessStockService processStockService;
+	private final CommunityService communityService;
+	private final MemberService memberService;
+	private final TierService tierService;
+	private final CommunityDAOJPA communityDAOJPA;
 
 	HomeController() {
 		this.requestStockService = new RequestStockService();

@@ -13,7 +13,7 @@ import java.util.List;
 
 @Service("ProcessStockService")
 public class ProcessStockService {
-	private StockDAOJPA stockDAOJPA;
+	private final StockDAOJPA stockDAOJPA;
 
 	public ProcessStockService() {
 		this.stockDAOJPA = new StockDAOJPA();

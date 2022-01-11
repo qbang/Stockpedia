@@ -8,7 +8,7 @@ import java.util.List;
 
 @Service("TierService")
 public class TierService {
-	private TierDAOJPA tierDAOJPA;
+	private final TierDAOJPA tierDAOJPA;
 
 	public TierService() {
 		this.tierDAOJPA = new TierDAOJPA();
