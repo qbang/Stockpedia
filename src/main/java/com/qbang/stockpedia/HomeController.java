@@ -40,9 +40,11 @@ public class HomeController {
 	private final MemberService memberService;
 	private final TierService tierService;
 	private final CommunityDAOJPA communityDAOJPA;
+	private final RedisService redisService;
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Model model, HttpServletRequest req) {
+		redisService.test();
 		HttpSession session = req.getSession();
 		//세션에서 닉네임 가져오기
 		Object unick = session.getAttribute("unick");
