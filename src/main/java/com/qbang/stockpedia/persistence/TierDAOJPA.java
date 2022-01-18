@@ -5,9 +5,9 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
 import javax.persistence.Query;
 
+import com.qbang.stockpedia.domain.EmfFactory;
 import org.springframework.stereotype.Repository;
 
 import com.qbang.stockpedia.domain.CommentCount;
@@ -15,7 +15,7 @@ import com.qbang.stockpedia.domain.Tier;
 
 @Repository("TierDAOJPA")
 public class TierDAOJPA {
-	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Stockpedia");
+	private EntityManagerFactory emf = EmfFactory.getEntityManagerFactory();
 	private EntityManager em = emf.createEntityManager();
 	private EntityTransaction tx = em.getTransaction();
 	
