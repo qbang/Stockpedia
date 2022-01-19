@@ -18,9 +18,9 @@ public class Tier implements Serializable {
 	public int getNum() {
 		return num;
 	}
-//	public void setNum(int num) {
-//		this.num = num;
-//	}
+	public void setNum(int num) {
+		this.num = num;
+	}
 	public int getUser_num() {
 		return user_num;
 	}

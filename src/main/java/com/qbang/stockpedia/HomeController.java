@@ -89,7 +89,7 @@ public class HomeController {
 			String upw = request.getParameter("upw");
 			String unick = memberService.checkUser(uid, upw);
 
-			if (unick.equals("")) {	//로그인 실패
+			if (unick == null) {	//로그인 실패
 				return "redirect:/login";
 			} else { //로그인 성공
 				HttpSession session = request.getSession();
@@ -130,11 +130,10 @@ public class HomeController {
 	@RequestMapping(value = "/community", method = RequestMethod.GET)
 	public String community(Model model, HttpServletRequest req) {
 		HttpSession session = req.getSession();
-		if(session.getAttribute("uid") == null) {
+		if (session.getAttribute("uid") == null) {
 			return "redirect:/login";
 		}
-		// 글 리스트 가져오기 
-//		List<Board> list = communityService.getContentList();
+		// 글 리스트 가져오기
 		List<Board> list = communityDAOJPA.selectContentList();
 		model.addAttribute("list", list);
 
@@ -156,8 +155,7 @@ public class HomeController {
 		int num = memberService.getUserNum(uid);
 		String title = req.getParameter("title");
 		String content = req.getParameter("content");
-		// 게시글 등록 
-//		communityService.registerContent(title, content, num);
+		// 게시글 등록
 		communityDAOJPA.insertContent(title, content, num, today);
 		
 		return "redirect:/community";
@@ -170,14 +168,12 @@ public class HomeController {
 		if(session.getAttribute("uid") == null) {
 			return "redirect:/login";
 		}
-		//클릭 게시글 내용 가져오기 
-//		Board board = communityService.getSingleContent(board_num);
+		//클릭 게시글 내용 가져오기
 		Board board = communityDAOJPA.selectSingleContent(board_num);
 		
 		//게시글 로드 과정에서 오류가 나지 않았을 때 
 		if (board != null) {
-			//댓글 리스트 가져오기 
-//			List<CommentTier> comment = communityService.getCommentList(board_num);
+			//댓글 리스트 가져오기
 			List<CommentTier> comment = communityDAOJPA.selectCommentList(board_num);
 			
 			model.addAttribute("content", board);
@@ -205,8 +201,7 @@ public class HomeController {
 		int member_num = memberService.getUserNum(uid);
 		int board_num = Integer.parseInt(req.getParameter("board_num"));
 		String comment = req.getParameter("comment");
-		//댓글 등록 
-//		communityService.registerComment(comment, board_num, member_num);
+		//댓글 등록
 		communityDAOJPA.insertComment(comment, board_num, member_num);
 		
 		return "redirect:/post?board_num=" + board_num;
@@ -220,7 +215,6 @@ public class HomeController {
 		String uid = (String) session.getAttribute("uid");
 		int member_num = memberService.getUserNum(uid);
 		// 이미 좋아요를 눌렀는데 또 눌렀을 때 처리 필요
-//		communityService.registerLike(Integer.parseInt(board_num), member_num);
 		communityDAOJPA.insertLike(Integer.parseInt(board_num), member_num);
 
 		return "redirect:/post?board_num=" + board_num;

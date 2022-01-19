@@ -1,9 +1,7 @@
 package com.qbang.stockpedia.domain;
 
 import java.io.Serializable;
-import java.util.*;
-
-import javax.persistence.*;
+import java.util.Objects;
 
 /**
  * Entity implementation class for Entity: Board_member
@@ -15,12 +13,15 @@ public class Board_member_id implements Serializable {
 	private int member_num;
 	
 	@Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Board_member_id id = (Board_member_id) o;
-        return (board_num == id.board_num) &&
-        		(member_num == id.member_num);
+    public boolean equals(Object object) {
+        if (this == object) {
+        	return true;
+		}
+        if (object == null || getClass() != object.getClass()) {
+        	return false;
+		}
+        Board_member_id id = (Board_member_id) object;
+        return (board_num == id.board_num) && (member_num == id.member_num);
     }
 	
 	@Override
