@@ -26,11 +26,11 @@ public class RequestStockService {
 	
 	// KTB투자증권에서 제공하는 종목코드조회에서 종목코드가져오기
 	public HashSet<String> getItemCode() throws IOException {
-		HashSet<String> codeSet = new HashSet<String>();
+		HashSet<String> codeSet = new HashSet<>();
 		Document doc = Jsoup.connect(codeURL).get();
 		Elements elem = doc.select("select[name=\"StockS\"]");
 		Iterator<Element> iter1 = elem.select("option").iterator();
-		while(iter1.hasNext()) {
+		while (iter1.hasNext()) {
 			Element iter2 = iter1.next();
 			String code = iter2.attr("value");
 			codeSet.add(code);
@@ -40,7 +40,7 @@ public class RequestStockService {
 	
 	// 종목코드로 한국거래소에 주식정보요청 template 생성
 	public JSONArray getItemInfo(HashSet<String> codeSet){
-		for(String key : codeSet) {
+		for (String key : codeSet) {
 			HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
 			factory.setReadTimeout(30000);
 			RestTemplate template = new RestTemplate(factory);
@@ -52,10 +52,10 @@ public class RequestStockService {
 	// template 받아서 요청 후 실패하면 다시 호출
 	private void getResponseBody(RestTemplate template, String key) {
 		try {
-			String body = template.getForObject(infoURL+key, String.class);
+			String body = template.getForObject(infoURL + key, String.class);
 			JSONObject object = XML.toJSONObject(body);
 			stockInfoArr.put(object);
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}

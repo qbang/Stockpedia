@@ -26,7 +26,7 @@ public class TierDAOJPA {
 		Query query = em.createNativeQuery(jpql, CommentCount.class);
 		try {
 			list = (List<CommentCount>) query.getResultList();
-		}catch(Exception e){
+		} catch (Exception e) {
 			list = null;
 		}
 		return list;
@@ -48,18 +48,18 @@ public class TierDAOJPA {
 		try {
 			tx.begin();
 			
-			for(int i=0; i<len; i++) {
+			for (int i = 0; i < len; i++) {
 				int tierNum = 0;
 				
-				if(i < len*0.04) {
+				if (i < len * 0.04) {
 					tierNum = 1;
-				}else if(len*0.04 < i && i < len*0.1) {
+				} else if (len * 0.04 < i && i < len * 0.1) {
 					tierNum = 2;
-				}else if(len*0.1 <= i && i < len*0.3) {
+				} else if (len * 0.1 <= i && i < len * 0.3) {
 					tierNum = 3;
-				}else if(len*0.3 <= i && i < len*0.6) {
+				} else if (len * 0.3 <= i && i < len * 0.6) {
 					tierNum = 4;
-				}else{
+				} else {
 					tierNum = 5;
 				}
 				
@@ -71,7 +71,7 @@ public class TierDAOJPA {
 			}
 			
 			tx.commit();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			tx.rollback();
 		}

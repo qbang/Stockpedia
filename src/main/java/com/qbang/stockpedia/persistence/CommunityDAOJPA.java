@@ -14,7 +14,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository("CommunityDAOJPA")
 public class CommunityDAOJPA {
-//	private EntityManagerFactory emf = Persistence.createEntityManagerFactory("Stockpedia");
 	private EntityManagerFactory emf = EmfFactory.getEntityManagerFactory();
 	private EntityManager em = emf.createEntityManager();
 	private EntityTransaction tx = em.getTransaction();
@@ -34,7 +33,7 @@ public class CommunityDAOJPA {
 			em.persist(board);
 			
 			tx.commit();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			tx.rollback();
 		}
@@ -45,7 +44,7 @@ public class CommunityDAOJPA {
 		List<Board> list;
 		try {
 			list = em.createQuery(jpql, Board.class).getResultList();
-		}catch(Exception e){
+		} catch (Exception e) {
 			list = null;
 		}
 		return list;
@@ -62,7 +61,7 @@ public class CommunityDAOJPA {
 		Board board;
 		try {
 			board = em.createQuery(jpql, Board.class).getSingleResult();
-		}catch(Exception e){
+		} catch (Exception e){
 			board = null;
 		}
 		return board;
@@ -80,7 +79,7 @@ public class CommunityDAOJPA {
 			em.persist(comment);
 			
 			tx.commit();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			tx.rollback();
 		}
@@ -92,7 +91,7 @@ public class CommunityDAOJPA {
 		
 		try {
 			list = em.createNativeQuery(jpql, CommentTier.class).getResultList();
-		}catch(Exception e){
+		} catch (Exception e) {
 			list = null;
 		}
 		return list;
@@ -111,7 +110,7 @@ public class CommunityDAOJPA {
 			em.persist(board_member);
 			
 			tx.commit();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			tx.rollback();
 		}

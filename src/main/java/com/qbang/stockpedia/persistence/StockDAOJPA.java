@@ -24,7 +24,7 @@ public class StockDAOJPA {
 		try {
 			tx.begin();
 			
-			for(String key : map.keySet()) {
+			for (String key : map.keySet()) {
 				Stock stock = new Stock();
 				
 				stock.setName(key);
@@ -35,10 +35,10 @@ public class StockDAOJPA {
 			}
 			
 			tx.commit();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			tx.rollback();
-		}finally {
+		} finally {
 			em.close();
 		}
 		
@@ -51,7 +51,7 @@ public class StockDAOJPA {
 		String jpql = "select s from Stock as s where s.reg_date = '2021-06-04'";
 		try {
 			list = em.createQuery(jpql, Stock.class).getResultList();
-		}catch(Exception e){
+		} catch (Exception e) {
 			list = null;
 		}
 		return list;
@@ -63,7 +63,7 @@ public class StockDAOJPA {
 		String jpql = "select s from Stock as s where s.reg_date = '2021-06-04' and s.value >= "+start+" and s.value < "+end+" order by s.value";
 		try {
 			list = em.createQuery(jpql, Stock.class).getResultList();
-		}catch(Exception e){
+		} catch (Exception e) {
 			list = null;
 		}
 		return list;

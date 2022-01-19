@@ -27,7 +27,7 @@ public class MemberDAOJPA {
 			em.persist(member);
 			
 			tx.commit();
-		}catch(Exception e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			tx.rollback();
 		}
@@ -38,7 +38,7 @@ public class MemberDAOJPA {
 		Member member;
 		try {
 			member = em.createQuery(jpql, Member.class).getSingleResult();
-		}catch(Exception e){
+		} catch (Exception e) {
 			member = null;
 		}
 		return member;
