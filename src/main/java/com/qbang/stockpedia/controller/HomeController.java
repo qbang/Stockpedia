@@ -1,4 +1,4 @@
-package com.qbang.stockpedia;
+package com.qbang.stockpedia.controller;
 
 import com.qbang.stockpedia.domain.Board;
 import com.qbang.stockpedia.domain.CommentTier;
@@ -6,13 +6,9 @@ import com.qbang.stockpedia.domain.Stock;
 import com.qbang.stockpedia.impl.*;
 import com.qbang.stockpedia.persistence.CommunityDAOJPA;
 import lombok.RequiredArgsConstructor;
-import org.json.JSONArray;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpMethod;
-import org.springframework.scheduling.annotation.Async;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,21 +17,21 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
-@EnableScheduling
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
-	
+
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	private static java.sql.Date today = new java.sql.Date(new java.util.Date().getTime());
 
-	private final RequestStockService requestStockService;
 	private final ProcessStockService processStockService;
 	private final CommunityService communityService;
 	private final MemberService memberService;
@@ -54,27 +50,27 @@ public class HomeController {
 		} else {
 			model.addAttribute("unick", unick.toString());
 		}
-		
+
 		//오늘 날짜의 주식정보 가져오기
 		List<Stock> stock = processStockService.searchTodayStock();
-		
+
 		if (stock == null || stock.size() == 0) {
 			stock = processStockService.searchPastStock();
 		}
-		
+
 		//가져온 정보에서 개수만 빼주고 모델에 넣기
 		ArrayList<HashMap<String, Integer>>[] arr = processStockService.classifyItemInfo(stock);
 		for (int i = 0; i < arr.length; i++) {
 			String mapName = "map" + (i + 1);
 			model.addAttribute(mapName, arr[i].size());
 		}
-		
+
 		//인기글 가져오기
 		Optional<List<Board>> board = communityDAOJPA.selectContentTopList();
 		if (board.isPresent()) { // null일 때 콘텐츠를 어떻게 보여줄건지 처리 필요
 			model.addAttribute("list", board.get());
 		}
-		
+
 		return "main";
 	}
 
@@ -126,7 +122,7 @@ public class HomeController {
 		}
 		return result;
 	}
-	
+
 	@RequestMapping(value = "/community", method = RequestMethod.GET)
 	public String community(Model model, HttpServletRequest req) {
 		HttpSession session = req.getSession();
@@ -139,28 +135,28 @@ public class HomeController {
 
 		return "community";
 	}
-	
+
 	@RequestMapping(value = "/reqWrite", method = RequestMethod.GET)
 	public String reqWrite() {
 		return "write";
-	}	
-	
+	}
+
 	@RequestMapping(value = "/doWrite", method = RequestMethod.POST)
 	public String doWrite(HttpServletRequest req) throws UnsupportedEncodingException {
 		req.setCharacterEncoding("UTF-8");
-		
+
 		HttpSession session = req.getSession();
-		
+
 		String uid = (String) session.getAttribute("uid");
 		int num = memberService.getUserNum(uid);
 		String title = req.getParameter("title");
 		String content = req.getParameter("content");
 		// 게시글 등록
 		communityDAOJPA.insertContent(title, content, num, today);
-		
+
 		return "redirect:/community";
 	}
-	
+
 	@RequestMapping(value = "/post", method = RequestMethod.GET)
 	public String content(Model model, HttpServletRequest req, @RequestParam int board_num) {
 		HttpSession session = req.getSession();
@@ -170,40 +166,40 @@ public class HomeController {
 		}
 		//클릭 게시글 내용 가져오기
 		Board board = communityDAOJPA.selectSingleContent(board_num);
-		
+
 		//게시글 로드 과정에서 오류가 나지 않았을 때 
 		if (board != null) {
 			//댓글 리스트 가져오기
 			List<CommentTier> comment = communityDAOJPA.selectCommentList(board_num);
-			
+
 			model.addAttribute("content", board);
 			model.addAttribute("comment", comment);
 		} else {
 			return "redirect:/community";
 		}
-		
+
 		//현재 이용자가 등록한 좋아요가 있는지 검사 
 		int member_num = memberService.getUserNum((String) session.getAttribute("uid"));
 		boolean check = communityService.checkExistLike(board_num, member_num);
 
 		model.addAttribute("like", check ? true : false);
-	
+
 		return "post";
 	}
-	
+
 	@RequestMapping(value = "/comment", method = RequestMethod.POST)
 	public String comment(HttpServletRequest req) throws UnsupportedEncodingException {
 		req.setCharacterEncoding("UTF-8");
-		
+
 		HttpSession session = req.getSession();
-		
+
 		String uid = (String) session.getAttribute("uid");
 		int member_num = memberService.getUserNum(uid);
 		int board_num = Integer.parseInt(req.getParameter("board_num"));
 		String comment = req.getParameter("comment");
 		//댓글 등록
 		communityDAOJPA.insertComment(comment, board_num, member_num);
-		
+
 		return "redirect:/post?board_num=" + board_num;
 	}
 
@@ -219,35 +215,13 @@ public class HomeController {
 
 		return "redirect:/post?board_num=" + board_num;
 	}
-	
+
 	@RequestMapping(value="/stock", method = RequestMethod.GET)
 	public String stock(Model model, @RequestParam int idx) {
 		//금액별 주식 리스트 조회 
 		List<Stock> list = processStockService.searchIdxStock(idx);
 		model.addAttribute("list", list);
-		
-		return "stock";
-	}
-	
-	//1시간 마다 실행
-	@Scheduled(cron="0 0 0/1 * * *")
-	@Async
-	public void batchForStock() throws IOException {
-		List<Stock> stock = processStockService.searchTodayStock();
 
-		if (stock == null || stock.size() == 0) {
-			HashSet<String> codeSet = requestStockService.getItemCode();
-			JSONArray ret = requestStockService.getItemInfo(codeSet);
-			// 종목명이랑 가격만 빼주고 DB에 넣어주기
-			HashMap<String, Integer> map = processStockService.parseItemInfo(ret);
-			processStockService.registerStock(map);
-		}
-	}
-	
-	//매주 월요일 0시에 실행
-	@Scheduled(cron="0 0 0 * * MON")
-	@Async
-	public void batchForTier() {
-		tierService.updateTier();
+		return "stock";
 	}
 }
