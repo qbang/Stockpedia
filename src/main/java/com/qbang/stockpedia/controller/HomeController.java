@@ -45,11 +45,7 @@ public class HomeController {
 		HttpSession session = req.getSession();
 		//세션에서 닉네임 가져오기
 		Object unick = session.getAttribute("unick");
-		if (unick == null) {
-			model.addAttribute("unick", "게스트");
-		} else {
-			model.addAttribute("unick", unick.toString());
-		}
+		model.addAttribute("unick", unick == null ? "게스트" : unick.toString());
 
 		//오늘 날짜의 주식정보 가져오기
 		List<Stock> stock = processStockService.searchTodayStock();
