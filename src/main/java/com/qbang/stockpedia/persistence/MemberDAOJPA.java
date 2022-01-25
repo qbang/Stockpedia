@@ -39,6 +39,7 @@ public class MemberDAOJPA {
 		try {
 			member = em.createQuery(jpql, Member.class).getSingleResult();
 		} catch (Exception e) {
+			e.printStackTrace();
 			member = null;
 		}
 		return member;
