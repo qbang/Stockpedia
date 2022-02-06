@@ -4,6 +4,7 @@ import com.qbang.stockpedia.domain.Board;
 import com.qbang.stockpedia.domain.Stock;
 import com.qbang.stockpedia.impl.ProcessStockService;
 import com.qbang.stockpedia.impl.RedisService;
+import com.qbang.stockpedia.impl.SchedulerService;
 import com.qbang.stockpedia.persistence.CommunityDAOJPA;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,7 +25,7 @@ import java.util.Optional;
 public class HomeController {
 	private final ProcessStockService processStockService;
 	private final CommunityDAOJPA communityDAOJPA;
-	private final RedisService redisService;
+	private final SchedulerService schedulerService;
 
 	@GetMapping("/")
 	public String home(Model model, HttpServletRequest req) {
