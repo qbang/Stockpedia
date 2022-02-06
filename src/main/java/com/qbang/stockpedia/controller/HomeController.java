@@ -8,8 +8,7 @@ import com.qbang.stockpedia.persistence.CommunityDAOJPA;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,9 +25,9 @@ public class HomeController {
 	private final CommunityDAOJPA communityDAOJPA;
 	private final RedisService redisService;
 
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@GetMapping("/")
 	public String home(Model model, HttpServletRequest req) {
-		redisService.test();
+//		redisService.test();
 		HttpSession session = req.getSession();
 		//세션에서 닉네임 가져오기
 		Object unick = session.getAttribute("unick");
@@ -57,7 +56,7 @@ public class HomeController {
 		return "main";
 	}
 
-	@RequestMapping(value="/stock", method = RequestMethod.GET)
+	@GetMapping("/stock")
 	public String stock(Model model, @RequestParam int idx) {
 		//금액별 주식 리스트 조회 
 		List<Stock> list = processStockService.searchIdxStock(idx);

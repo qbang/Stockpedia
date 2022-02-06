@@ -8,9 +8,7 @@ import com.qbang.stockpedia.persistence.CommunityDAOJPA;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -26,7 +24,7 @@ public class CommunityController {
     private final MemberService memberService;
     private final CommunityDAOJPA communityDAOJPA;
 
-    @RequestMapping(value = "/community", method = RequestMethod.GET)
+    @GetMapping("/community")
     public String community(Model model, HttpServletRequest req) {
         HttpSession session = req.getSession();
         if (session.getAttribute("uid") == null) {
@@ -39,12 +37,12 @@ public class CommunityController {
         return "community";
     }
 
-    @RequestMapping(value = "/reqWrite", method = RequestMethod.GET)
+    @GetMapping("/reqWrite")
     public String reqWrite() {
         return "write";
     }
 
-    @RequestMapping(value = "/doWrite", method = RequestMethod.POST)
+    @PostMapping("/doWrite")
     public String doWrite(HttpServletRequest req) throws UnsupportedEncodingException {
         req.setCharacterEncoding("UTF-8");
 
@@ -60,7 +58,7 @@ public class CommunityController {
         return "redirect:/community";
     }
 
-    @RequestMapping(value = "/post", method = RequestMethod.GET)
+    @GetMapping("/post")
     public String content(Model model, HttpServletRequest req, @RequestParam int board_num) {
         HttpSession session = req.getSession();
 
@@ -90,7 +88,7 @@ public class CommunityController {
         return "post";
     }
 
-    @RequestMapping(value = "/comment", method = RequestMethod.POST)
+    @PostMapping("/comment")
     public String comment(HttpServletRequest req) throws UnsupportedEncodingException {
         req.setCharacterEncoding("UTF-8");
 
@@ -106,7 +104,7 @@ public class CommunityController {
         return "redirect:/post?board_num=" + board_num;
     }
 
-    @RequestMapping(value = "/like", method = RequestMethod.POST)
+    @PostMapping( "/like")
     public String like(HttpServletRequest request) {
         HttpSession session = request.getSession();
 
