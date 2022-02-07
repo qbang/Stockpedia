@@ -21,7 +21,8 @@ import org.springframework.web.client.RestTemplate;
 public class RequestStockService {
 	private final String codeURL = "https://www.ktb.co.kr/trading/popup/itemPop.jspx";
 	private final String infoURL = "http://asp1.krx.co.kr/servlet/krx.asp.XMLSise?code=";
-	
+	private final String localURL = "http://127.0.0.1:5000?code=";
+
 	private JSONArray stockInfoArr = new JSONArray();
 	
 	// KTB투자증권에서 제공하는 종목코드조회에서 종목코드가져오기
@@ -39,7 +40,7 @@ public class RequestStockService {
 	}
 	
 	// 종목코드로 한국거래소에 주식정보요청 template 생성
-	public JSONArray getItemInfo(HashSet<String> codeSet){
+	public JSONArray getItemInfo(HashSet<String> codeSet) {
 		for (String key : codeSet) {
 			HttpComponentsClientHttpRequestFactory factory = new HttpComponentsClientHttpRequestFactory();
 			factory.setReadTimeout(30000);
@@ -60,6 +61,10 @@ public class RequestStockService {
 		}
 	}
 
+	public void requestItemInfo() {
+		RestTemplate restTemplate = new RestTemplate();
+		String response = restTemplate.getForObject(localURL + 100, String.class);
+	}
 
 }
 
