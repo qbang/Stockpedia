@@ -1,10 +1,5 @@
 package com.qbang.stockpedia.impl;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.XML;
@@ -16,18 +11,21 @@ import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.IOException;
+import java.util.HashSet;
+import java.util.Iterator;
+
 
 @Service("RequestStockService")
 public class RequestStockService {
-	private final String codeURL = "https://www.ktb.co.kr/trading/popup/itemPop.jspx";
-	private final String infoURL = "http://asp1.krx.co.kr/servlet/krx.asp.XMLSise?code=";
-	private final String localURL = "http://127.0.0.1:5000?code=";
-
+	private static final String codeURL = "https://www.ktb.co.kr/trading/popup/itemPop.jspx";
+	private static final String infoURL = "http://asp1.krx.co.kr/servlet/krx.asp.XMLSise?code=";
+	private static final String localURL = "http://127.0.0.1:5000?code=";
+	private static HashSet<String> codeSet = new HashSet<>();
 	private JSONArray stockInfoArr = new JSONArray();
 	
 	// KTB투자증권에서 제공하는 종목코드조회에서 종목코드가져오기
 	public HashSet<String> getItemCode() throws IOException {
-		HashSet<String> codeSet = new HashSet<>();
 		Document doc = Jsoup.connect(codeURL).get();
 		Elements elem = doc.select("select[name=\"StockS\"]");
 		Iterator<Element> iter1 = elem.select("option").iterator();
@@ -61,9 +59,11 @@ public class RequestStockService {
 		}
 	}
 
-	public void requestItemInfo() {
+	public void requestItemInfo(HashSet<String> codeSet) {
 		RestTemplate restTemplate = new RestTemplate();
-		String response = restTemplate.getForObject(localURL + 100, String.class);
+		for (String key : codeSet) {
+			String response = restTemplate.getForObject(localURL + key, String.class);
+		}
 	}
 
 }
