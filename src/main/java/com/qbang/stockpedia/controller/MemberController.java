@@ -38,7 +38,7 @@ public class MemberController {
         String upw = request.getParameter("upw");
         String unick = request.getParameter("unick");
 
-        if (memberService.checkUser(uid, upw) != null) {
+        if (memberService.getUserNum(uid) != -1) {
             model.addAttribute("warning", WARN_EXIST_MEMBER);
             return "register";
         }
