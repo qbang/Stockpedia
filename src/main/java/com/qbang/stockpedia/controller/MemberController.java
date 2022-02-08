@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -17,6 +18,7 @@ import java.text.SimpleDateFormat;
 @Controller
 @RequiredArgsConstructor
 public class MemberController {
+    private static final String WARN_EXIST_MEMBER = "동일한 아이디가 존재합니다. 다른 계정 정보를 입력해주세요!";
     private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
     private static SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -29,12 +31,17 @@ public class MemberController {
     }
 
     @PostMapping("/member")
-    public String member(HttpServletRequest request) throws UnsupportedEncodingException {
+    public String member(HttpServletRequest request, Model model) throws UnsupportedEncodingException {
         request.setCharacterEncoding("UTF-8");
 
         String uid = request.getParameter("uid");
         String upw = request.getParameter("upw");
         String unick = request.getParameter("unick");
+
+        if (memberService.checkUser(uid, upw) != null) {
+            model.addAttribute("warning", WARN_EXIST_MEMBER);
+            return "register";
+        }
 
         memberService.registerUser(uid, upw, unick);
 
