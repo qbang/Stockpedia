@@ -15,7 +15,7 @@ public class MemberDAOJPA {
 	private EntityManager em = emf.createEntityManager();
 	private EntityTransaction tx = em.getTransaction();
 	
-	public void insertMember(String uid, String upw, String unick) {
+	public Member insertMember(String uid, String upw, String unick) {
 		try {
 			tx.begin();
 			
@@ -27,10 +27,14 @@ public class MemberDAOJPA {
 			em.persist(member);
 			
 			tx.commit();
+
+			return member;
 		} catch (Exception e) {
 			e.printStackTrace();
 			tx.rollback();
 		}
+
+		return null;
 	}
 	
 	public Member selectMember(String uid) {

@@ -2,6 +2,7 @@ package com.qbang.stockpedia.impl;
 
 import com.qbang.stockpedia.domain.Member;
 import com.qbang.stockpedia.persistence.MemberDAOJPA;
+import com.qbang.stockpedia.persistence.TierDAOJPA;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -11,12 +12,14 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MemberService {
 	private final MemberDAOJPA memberDAOJPA;
+	private final TierDAOJPA tierDAOJPA;
 	private BCryptPasswordEncoder passwordEcoder = new BCryptPasswordEncoder();
 
 	//회원가입
 	public void registerUser(String uid, String upw, String unick) {
 		String encPw = passwordEcoder.encode(upw);
 		memberDAOJPA.insertMember(uid, encPw, unick);
+		tierDAOJPA.insertTier(getUserNum(uid)); //티어를 새로 넣어줌
 	}
 	
 	//로그인
@@ -28,7 +31,7 @@ public class MemberService {
 			String pw = member.getUpw();
 			String nick = member.getUnick();
 			
-			if (id.equals(uid) && passwordEcoder.matches(upw, pw) && nick != null) {
+			if (id.equals(uid) && passwordEcoder.matches(upw, pw)) {
 				return nick;
 			}
 		}
