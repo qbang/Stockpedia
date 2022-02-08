@@ -8,6 +8,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import com.qbang.stockpedia.domain.EmfFactory;
+import com.qbang.stockpedia.domain.Member;
 import org.springframework.stereotype.Repository;
 
 import com.qbang.stockpedia.domain.CommentCount;
@@ -15,6 +16,7 @@ import com.qbang.stockpedia.domain.Tier;
 
 @Repository("TierDAOJPA")
 public class TierDAOJPA {
+	private static final int LOWEST_TIER_LEVEL = 5;
 	private EntityManagerFactory emf = EmfFactory.getEntityManagerFactory();
 	private EntityManager em = emf.createEntityManager();
 	private EntityTransaction tx = em.getTransaction();
@@ -42,7 +44,7 @@ public class TierDAOJPA {
 		tx.commit();
 	}
 	
-	public void insertTier(List<CommentCount> list) {
+	public void updateTier(List<CommentCount> list) {
 		int len = list.size();
 
 		try {
@@ -75,5 +77,13 @@ public class TierDAOJPA {
 			e.printStackTrace();
 			tx.rollback();
 		}
+	}
+
+	public void insertTier(int uid) {
+		Tier tier = new Tier();
+		tier.setTier_num(LOWEST_TIER_LEVEL);
+		tier.setUser_num(uid);
+
+		em.persist(tier);
 	}
 }

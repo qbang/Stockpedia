@@ -16,7 +16,7 @@ public class TierService {
 		List<CommentCount> list = tierDAOJPA.selectCommentCount();
 		if (list != null) {
 			tierDAOJPA.deleteTier();
-			tierDAOJPA.insertTier(list);
+			tierDAOJPA.updateTier(list);
 		}
 	}
 }
