@@ -1,11 +1,10 @@
 package com.qbang.stockpedia.impl;
 
+import com.qbang.stockpedia.domain.Member;
+import com.qbang.stockpedia.persistence.MemberDAOJPA;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import com.qbang.stockpedia.domain.Member;
-import com.qbang.stockpedia.persistence.MemberDAOJPA;
 
 
 @Service("MemberService")
@@ -13,7 +12,7 @@ import com.qbang.stockpedia.persistence.MemberDAOJPA;
 public class MemberService {
 	private final MemberDAOJPA memberDAOJPA;
 	private BCryptPasswordEncoder passwordEcoder = new BCryptPasswordEncoder();
-	
+
 	//회원가입
 	public void registerUser(String uid, String upw, String unick) {
 		String encPw = passwordEcoder.encode(upw);
@@ -39,7 +38,6 @@ public class MemberService {
 	//글 등록에 필요한 user num 가져오기
 	public int getUserNum(String uid) {
 		Member member = memberDAOJPA.selectMember(uid);
-		
 		if (member != null) {
 			return member.getNum();
 		}

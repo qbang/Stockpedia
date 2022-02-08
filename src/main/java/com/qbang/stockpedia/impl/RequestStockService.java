@@ -60,10 +60,10 @@ public class RequestStockService {
 	}
 
 	public void requestItemInfo(HashSet<String> codeSet) {
-		RestTemplate restTemplate = new RestTemplate();
-		for (String key : codeSet) {
-			String response = restTemplate.getForObject(localURL + key, String.class);
-		}
+//		RestTemplate restTemplate = new RestTemplate();
+//		for (String key : codeSet) {
+//			String response = restTemplate.getForObject(localURL + key, String.class);
+//		}
 	}
 
 }
