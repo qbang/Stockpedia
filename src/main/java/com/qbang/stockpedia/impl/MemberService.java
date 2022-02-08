@@ -22,13 +22,13 @@ public class MemberService {
 	//로그인
 	public String checkUser(String uid, String upw) {
 		Member member = memberDAOJPA.selectMember(uid);
-		
+
 		if (member != null) {
 			String id = member.getUid();
 			String pw = member.getUpw();
 			String nick = member.getUnick();
 			
-			if (id.equals(uid) && passwordEcoder.matches(upw, pw)) {
+			if (id.equals(uid) && passwordEcoder.matches(upw, pw) && nick != null) {
 				return nick;
 			}
 		}

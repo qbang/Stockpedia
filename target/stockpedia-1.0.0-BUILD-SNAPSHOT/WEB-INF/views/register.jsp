@@ -18,9 +18,13 @@
 </head>
 
 <body>
+<% String warning = (String) request.getAttribute("warning"); %>
 <div class="container">
+	<% if (warning != null) { %>
+	<div class="notification is-danger is-light">${warning}</div>
+	<% } %>
   <form action="member" method="post">
-    <img src="resources/gif/main_animation.gif">
+<%--    <img src="resources/gif/main_animation.gif">--%>
  	<div class="field">
 	  <div class="control">
 	    <input class="input" type="text" name="uid" placeholder="아이디를 입력하세요.">
