@@ -3,7 +3,6 @@ package com.qbang.stockpedia.controller;
 import com.qbang.stockpedia.domain.Board;
 import com.qbang.stockpedia.domain.Stock;
 import com.qbang.stockpedia.impl.ProcessStockService;
-import com.qbang.stockpedia.impl.RedisService;
 import com.qbang.stockpedia.impl.SchedulerService;
 import com.qbang.stockpedia.persistence.CommunityDAOJPA;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,6 +21,8 @@ import java.util.Optional;
 @Controller
 @RequiredArgsConstructor
 public class HomeController {
+	private static final String WARN_WRONG_RANGE = "잘못된 범위 입니다.";
+
 	private final ProcessStockService processStockService;
 	private final CommunityDAOJPA communityDAOJPA;
 	private final SchedulerService schedulerService;
@@ -58,11 +58,21 @@ public class HomeController {
 		return "main";
 	}
 
+//	postIdx < 0 인 경우 에러
 	@GetMapping("/stock")
-	public String stock(Model model, @RequestParam int idx) {
-		//금액별 주식 리스트 조회 
-		List<Stock> list = processStockService.searchIdxStock(idx);
+	public String stock(Model model, @RequestParam int priceIdx, @RequestParam int postIdx) {
+		//금액별 주식 리스트 조회
+		List<Stock> list = processStockService.searchIdxStock(priceIdx, postIdx < 0 ? 0 : postIdx);
+
+		if (postIdx < 0 || list.size() == 0 || list == null) {
+			model.addAttribute("warning", WARN_WRONG_RANGE);
+			model.addAttribute("postIdx", 0);
+		} else {
+			model.addAttribute("postIdx", postIdx);
+		}
+
 		model.addAttribute("list", list);
+		model.addAttribute("priceIdx", priceIdx);
 
 		return "stock";
 	}
