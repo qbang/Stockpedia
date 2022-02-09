@@ -57,12 +57,15 @@ public class StockDAOJPA {
 		return list;
 	}
 	
-	public List<Stock> selectIdxStock(int start, int end, Date date){
+	public List<Stock> selectIdxStock(int start, int end, Date date, int idx){
 		List<Stock> list = new ArrayList<Stock>();
 //		String jpql = "select s from Stock as s where s.reg_date = '"+date+"' and s.value >= "+start+" and s.value < "+end+" order by s.value";
 		String jpql = "select s from Stock as s where s.reg_date = '2021-06-04' and s.value >= "+start+" and s.value < "+end+" order by s.value";
 		try {
-			list = em.createQuery(jpql, Stock.class).getResultList();
+			list = em.createQuery(jpql, Stock.class)
+					.setFirstResult(10 * idx)
+					.setMaxResults(9)
+					.getResultList();
 		} catch (Exception e) {
 			list = null;
 		}

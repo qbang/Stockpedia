@@ -52,27 +52,27 @@
 		 	</tr>
 		 </thead>
 		 <tbody>
-		 		<tr onclick="location.href='stock?idx=0'">
+		 		<tr onclick="location.href='stock?priceIdx=0&postIdx=0'">
 		            <td>5,000원 미만</td>
 		            <td><span class="tag is-primary right_">${map1}</span></td>
 		         </tr>
-		         <tr onclick="location.href='stock?idx=1'">
+		         <tr onclick="location.href='stock?priceIdx=1&postIdx=0'">
 		            <td>5,000 - 10,000원</td>
 		            <td><span class="tag is-primary right_">${map2}</span></td>
 		         </tr>
-			        <tr onclick="location.href='stock?idx=2'">
+			        <tr onclick="location.href='stock?priceIdx=2&postIdx=0'">
 		            <td>10,000 - 20,000원</td>
 		            <td><span class="tag is-primary right_">${map3}</span></td>
 		         </tr>
-		         <tr onclick="location.href='stock?idx=3'">
+		         <tr onclick="location.href='stock?priceIdx=3&postIdx=0'">
 		            <td>20,000 - 50,000원</td>
 		            <td><span class="tag is-primary right_">${map4}</span></td>
 		         </tr>
-			        <tr onclick="location.href='stock?idx=4'">
+			        <tr onclick="location.href='stock?priceIdx=4&postIdx=0'">
 		            <td>50,000 - 100,000원</td>
 		            <td><span class="tag is-primary right_">${map5}</span></td>
 		         </tr>
-			        <tr onclick="location.href='stock?idx=5'">
+			        <tr onclick="location.href='stock?priceIdx=5&postIdx=0'">
 		            <td>100,000원 이상</td>
 		            <td><span class="tag is-primary right_">${map6}</span></td>
 		          </tr>

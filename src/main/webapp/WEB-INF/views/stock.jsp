@@ -47,6 +47,29 @@
 		<% }%>
     </tbody>
 	</table>
+	<br>
+	<% String warning = (String) request.getAttribute("warning"); %>
+	<% if (warning != null) { %>
+	<div class="notification is-danger is-light">${warning}</div>
+	<% } %>
+	<div style="display: flex; justify-content: space-between" >
+		<form action="stock" method="get">
+	<%--		<div class="buttons">--%>
+	<%--			<button class="button is-primary is-light bd-pagination-prev">이전</button>--%>
+			<button class="button is-rounded">←</button>
+	<%--		</div>--%>
+			<input type="hidden" name="priceIdx" value="${priceIdx}"/>
+			<input type="hidden" name="postIdx" value="${postIdx - 1}"/>
+		</form>
+		<form action="stock" method="get">
+	<%--		<div class="buttons">--%>
+	<%--			<button class="button is-primary bd-pagination-next">다음</button>--%>
+	<%--		</div>--%>
+			<button class="button is-rounded">→</button>
+			<input type="hidden" name="priceIdx" value="${priceIdx}"/>
+			<input type="hidden" name="postIdx" value="${postIdx + 1}"/>
+		</form>
+	</div>
 </div>
 </body>
 </html>
