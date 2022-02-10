@@ -8,7 +8,7 @@
 	<link rel="stylesheet" href="https://bulma.io/css/bulma-docs.min.css?v=202105031854"></head>
 	<style>
 		.container{
-			margin-top: 20px;
+			margin-top: 40px;
 			width: 20%;
 		}
 		button{
@@ -19,7 +19,7 @@
 <body>
 <div class="container">
   <form action="login" method="post">
-    <img src="resources/gif/main_animation.gif">
+<%--    <img src="resources/gif/main_animation.gif">--%>
  	<div class="field">
 	  <div class="control">
 	    <input class="input" type="text" name="uid" placeholder="아이디를 입력하세요.">

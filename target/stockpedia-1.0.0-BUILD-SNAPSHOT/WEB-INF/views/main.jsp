@@ -13,13 +13,12 @@
 	<link rel="stylesheet" href="https://bulma.io/css/bulma-docs.min.css?v=202105031854"></head>
 	<style>
 		.container{
-			margin-top: 20px;
+			margin-top: 30px;
 			width: 20%;
-			margin-bottom: 20px;
+			margin-bottom: 15px;
 		}
 		.container .main div{
 			float: left;
-			width: 50%;
 			display: flex;
 			flex-flow: column;
 			justify-content: center;
@@ -40,9 +39,9 @@
 			<h2 class="title pb-1">어서오세요, ${unick}님!</h2>
 			<h3 class="subtitle">적은 돈으로도 투자할 수 있는 주식을 찾아보세요.</h3>
 		</div>
-		<div>
-			<img height="200" width="200" src="resources/gif/main_animation.gif">
-		</div>
+<%--		<div>--%>
+<%--			<img height="200" width="200" src="resources/gif/main_animation.gif">--%>
+<%--		</div>--%>
 	</div>
 	
 	<table class="table is-hoverable is-fullwidth">
