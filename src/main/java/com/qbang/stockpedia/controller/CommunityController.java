@@ -28,7 +28,7 @@ public class CommunityController {
     public String community(Model model, HttpServletRequest req) {
         HttpSession session = req.getSession();
         if (session.getAttribute("uid") == null) {
-            return "redirect:/login";
+            return "login";
         }
         // 글 리스트 가져오기
         List<Board> list = communityDAOJPA.selectContentList();
@@ -62,21 +62,18 @@ public class CommunityController {
     public String content(Model model, HttpServletRequest req, @RequestParam int board_num) {
         HttpSession session = req.getSession();
 
-        if(session.getAttribute("uid") == null) {
-            return "redirect:/login";
-        }
         //클릭 게시글 내용 가져오기
         Board board = communityDAOJPA.selectSingleContent(board_num);
 
         //게시글 로드 과정에서 오류가 나지 않았을 때
-        if (board != null) {
+        if (board != null && session.getAttribute("uid") != null) {
             //댓글 리스트 가져오기
             List<CommentTier> comment = communityDAOJPA.selectCommentList(board_num);
 
             model.addAttribute("content", board);
             model.addAttribute("comment", comment);
         } else {
-            return "redirect:/community";
+            return "login";
         }
 
         //현재 이용자가 등록한 좋아요가 있는지 검사
