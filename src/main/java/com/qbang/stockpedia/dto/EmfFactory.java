@@ -1,4 +1,4 @@
-package com.qbang.stockpedia.domain;
+package com.qbang.stockpedia.dto;
 
 import org.springframework.stereotype.Component;
 

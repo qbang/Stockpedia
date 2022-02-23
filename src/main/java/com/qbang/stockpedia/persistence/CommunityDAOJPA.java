@@ -10,6 +10,7 @@ import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
 import com.qbang.stockpedia.domain.*;
+import com.qbang.stockpedia.dto.EmfFactory;
 import org.springframework.stereotype.Repository;
 
 @Repository("CommunityDAOJPA")

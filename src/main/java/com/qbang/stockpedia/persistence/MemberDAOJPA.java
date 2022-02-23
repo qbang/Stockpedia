@@ -4,7 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 
-import com.qbang.stockpedia.domain.EmfFactory;
+import com.qbang.stockpedia.dto.EmfFactory;
 import org.springframework.stereotype.Repository;
 
 import com.qbang.stockpedia.domain.Member;

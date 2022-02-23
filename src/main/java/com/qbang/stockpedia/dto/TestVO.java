@@ -1,4 +1,4 @@
-package com.qbang.stockpedia.domain;
+package com.qbang.stockpedia.dto;
 
 public class TestVO {
     private String data;
