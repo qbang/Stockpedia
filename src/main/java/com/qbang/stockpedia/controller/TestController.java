@@ -1,6 +1,6 @@
 package com.qbang.stockpedia.controller;
 
-import com.qbang.stockpedia.domain.TestVO;
+import com.qbang.stockpedia.dto.TestVO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 

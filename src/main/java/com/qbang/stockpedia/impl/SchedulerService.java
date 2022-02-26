@@ -2,7 +2,7 @@ package com.qbang.stockpedia.impl;
 
 import com.qbang.stockpedia.config.RedisConfig;
 import com.qbang.stockpedia.domain.Stock;
-import com.qbang.stockpedia.domain.StockRedis;
+import com.qbang.stockpedia.dto.StockRedis;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;

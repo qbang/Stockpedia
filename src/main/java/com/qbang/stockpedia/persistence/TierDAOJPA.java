@@ -7,8 +7,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Query;
 
-import com.qbang.stockpedia.domain.EmfFactory;
-import com.qbang.stockpedia.domain.Member;
+import com.qbang.stockpedia.dto.EmfFactory;
 import org.springframework.stereotype.Repository;
 
 import com.qbang.stockpedia.domain.CommentCount;

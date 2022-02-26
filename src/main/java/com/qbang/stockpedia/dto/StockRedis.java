@@ -1,4 +1,6 @@
-package com.qbang.stockpedia.domain;
+package com.qbang.stockpedia.dto;
+
+import com.qbang.stockpedia.domain.Stock;
 
 import java.io.Serializable;
 import java.util.List;
