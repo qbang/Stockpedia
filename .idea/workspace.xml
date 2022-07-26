@@ -9,17 +9,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="be46cf2e-3ff4-42e9-8bb4-39536f16921b" name="Default Changelist" comment="feat: 신규 프로젝트 경로 분리 및 stock 모듈 추가">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/new-stockpedia/stock/src/main/java/com/example/stock/controller/StockController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/new-stockpedia/stock/src/main/java/com/example/stock/persistence/Stock.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/new-stockpedia/stock/src/main/java/com/example/stock/repository/StockRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/new-stockpedia/stock/src/main/java/com/example/stock/service/StockService.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+    <list default="true" id="be46cf2e-3ff4-42e9-8bb4-39536f16921b" name="Default Changelist" comment="feat: stock 모듈 분리&#10;- DB 연동 잘 되었는지 확인하는 테스트 코드 필요">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-stockpedia/stock/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/new-stockpedia/stock/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-stockpedia/stock/src/main/java/com/example/stock/StockApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/new-stockpedia/stock/src/main/java/com/example/stock/StockApplication.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/new-stockpedia/stock/src/main/resources/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/new-stockpedia/stock/src/main/resources/application.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-stockpedia/stock/src/main/java/com/example/stock/controller/StockController.java" beforeDir="false" afterPath="$PROJECT_DIR$/new-stockpedia/stock/src/main/java/com/example/stock/controller/StockController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-stockpedia/stock/src/main/java/com/example/stock/persistence/Stock.java" beforeDir="false" afterPath="$PROJECT_DIR$/new-stockpedia/stock/src/main/java/com/example/stock/persistence/Stock.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-stockpedia/stock/src/main/java/com/example/stock/repository/StockRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/new-stockpedia/stock/src/main/java/com/example/stock/repository/StockRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/new-stockpedia/stock/src/main/java/com/example/stock/service/StockService.java" beforeDir="false" afterPath="$PROJECT_DIR$/new-stockpedia/stock/src/main/java/com/example/stock/service/StockService.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -110,19 +105,6 @@
     </option>
   </component>
   <component name="RunManager" selected="Spring Boot.StockApplication (1)">
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="gradle-wrapper.jar" type="JarApplication" temporary="true">
       <option name="JAR_PATH" value="$PROJECT_DIR$/new-stockpedia/stock/gradle/wrapper/gradle-wrapper.jar" />
       <method v="2" />
@@ -257,7 +239,8 @@
       <workItem from="1657620313507" duration="455000" />
       <workItem from="1657620827795" duration="1038000" />
       <workItem from="1657622624699" duration="693000" />
-      <workItem from="1658833644621" duration="3542000" />
+      <workItem from="1658833644621" duration="3748000" />
+      <workItem from="1658843552059" duration="907000" />
     </task>
     <task id="LOCAL-00001" summary="feat: 신규 프로젝트 경로 분리 및 stock 모듈 추가">
       <created>1657623193120</created>
@@ -273,7 +256,14 @@
       <option name="project" value="LOCAL" />
       <updated>1657623210816</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="feat: stock 모듈 분리&#10;- DB 연동 잘 되었는지 확인하는 테스트 코드 필요">
+      <created>1658837490540</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1658837490540</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -294,6 +284,7 @@
   <component name="VcsManagerConfiguration">
     <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="feat: 신규 프로젝트 경로 분리 및 stock 모듈 추가" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat: 신규 프로젝트 경로 분리 및 stock 모듈 추가" />
+    <MESSAGE value="feat: stock 모듈 분리&#10;- DB 연동 잘 되었는지 확인하는 테스트 코드 필요" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat: stock 모듈 분리&#10;- DB 연동 잘 되었는지 확인하는 테스트 코드 필요" />
   </component>
 </project>
