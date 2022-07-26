@@ -7,15 +7,17 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Optional;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/stock")
 public class StockController {
-    private StockService stockService;
+    private final StockService stockService;
 
     @GetMapping("/{num}")
     public String getStock() {
-        Stock stock = stockService.findByStock_num();
+        Optional<Stock> stock = stockService.findByStock_num();
         return stock.toString();
     }
 }

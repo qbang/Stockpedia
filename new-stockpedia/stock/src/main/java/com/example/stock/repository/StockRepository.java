@@ -4,5 +4,5 @@ import com.example.stock.persistence.Stock;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StockRepository extends JpaRepository<Stock, Integer> {
-    Stock findByStock_num(int num);
+
 }
