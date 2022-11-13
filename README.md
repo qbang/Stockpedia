@@ -4,7 +4,6 @@
 - 참여인원: 2명
 - 시연영상: [https://youtu.be/PVFYna0g3Rw](https://youtu.be/PVFYna0g3Rw)
 - 사용 기술: `Spring Framework` `JSP` `MySQL` `JPA`
-- 깃허브: [https://github.com/qbang/Stockpedia](https://github.com/qbang/Stockpedia)
 
 # Preview
 |화면 이름|설명|화면 이미지|
