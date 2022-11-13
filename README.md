@@ -51,12 +51,12 @@
 
 # Other libraries
 ### Bulma: CSS framework
-[Bulma: Free, open source, and modern CSS framework based on Flexbox](https://bulma.io/)
+- https://bulma.io/
 - View의 stylesheet로 활용하였습니다.
 
 ### KTB투자증권: 종목코드조회
-[종목코드조회](https://www.ktb.co.kr/trading/popup/itemPop.jspx)
+- https://www.ktb.co.kr/trading/popup/itemPop.jspx
 - 페이지에서 종목코드가 포함된 태그들을 크롤링하여 가져왔습니다.
 ### 한국거래소: 상장기업지원서비스(지원종료)
-[](https://kasp.krx.co.kr/contents/02/02010000/ASP02010000.jsp)
+- https://kasp.krx.co.kr/contents/02/02010000/ASP02010000.jsp
 - KTB투자증권에서 얻은 종목코드를 파라미터로 사용하여 코스피 종목의 가격 정보를 가져왔습니다.
